@@ -40,5 +40,15 @@ export const MAIL_PASS: string = process.env.MAILTRAP_PASS || "";
 // Encryption
 export const ENCRYPTION_KEY: string = process.env.ENCRYPTION_KEY || "";
 
-// 1 week in ms
+// Duration in ms
 export const ONE_WEEK_IN_MS = 1000 * 60 * 60 * 24 * 7;
+export const ONE_MINUTE_IN_MS = 1000 * 60;
+export const ONE_HOUR_IN_MS = 1000 * 60 * 60;
+export const ONE_DAY_IN_MS = 1000 * 60 * 60 * 24;
+export const ONE_MONTH_IN_MS = 1000 * 60 * 60 * 24 * 30;
+export const FIFTEEN_MINUTES_IN_MS = 1000 * 60 * 15;
+export const FIVE_MINUTES_IN_MS = 1000 * 60 * 5;
+
+// Cookie Domain
+export const COOKIE_DOMAIN =
+  process.env.NODE_ENV === "production" ? process.env.COOKIE_DOMAIN : undefined;

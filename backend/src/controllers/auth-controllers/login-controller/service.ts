@@ -1,21 +1,12 @@
-import { Session } from "./../../../../generated/prisma/index.d";
 import { findUserByEmail } from "@/helpers/database-calls/user";
-import {
-  LoginUserInput,
-  TwoFactorLoginInput,
-  TwoFactorLoginServiceResponse,
-} from "./schema";
+import { LoginUserInput, TwoFactorLoginInput } from "./schema";
 import { HTTP_STATUS, ONE_WEEK_IN_MS } from "@/constants";
 import { AppError } from "@/utils/error";
 import bcrypt from "bcryptjs";
 import { User } from "../../../../generated/prisma";
-import {
-  createJWT,
-  generateTwoFactorToken,
-  getJWTTokens,
-} from "@/services/token.service";
+import { createJWT, generateTwoFactorToken } from "@/services/token.service";
 import prisma from "@/config/db";
-import { getDeviceInfo, isMobile } from "@/services/ip-device.service";
+import { isMobile } from "@/services/ip-device.service";
 
 export const loginUserService = async (data: LoginUserInput) => {
   const { email, password } = data;
@@ -144,11 +135,11 @@ const createAndSendTokensAndSession = async (
           deviceType: mobile ? "mobile" : "desktop",
           userAgent: userAgent,
           ipAddress: ipAddress,
-          expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 1 week
+          expiresAt: new Date(Date.now() + ONE_WEEK_IN_MS), // 1 week
           refreshToken: {
             update: {
               token: newRefreshToken,
-              expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 1 week
+              expiresAt: new Date(Date.now() + ONE_WEEK_IN_MS), // 1 week
             },
           },
         },
@@ -164,11 +155,11 @@ const createAndSendTokensAndSession = async (
         ipAddress,
         userAgent,
         deviceType: mobile ? "mobile" : "desktop",
-        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 1 week
+        expiresAt: new Date(Date.now() + ONE_WEEK_IN_MS), // 1 week
         refreshToken: {
           create: {
             token: newRefreshToken,
-            expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 1 week
+            expiresAt: new Date(Date.now() + ONE_WEEK_IN_MS), // 1 week
           },
         },
       },
