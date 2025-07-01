@@ -5,6 +5,7 @@ import {
   getJWTTokens,
   handleJWTTokens,
   verifyJWTToken,
+  clearJWTCookies,
 } from "@/services/token.service";
 import { AppError } from "@/utils/error";
 import { HTTP_STATUS, ONE_WEEK_IN_MS } from "@/constants";
@@ -20,6 +21,7 @@ export const refreshToken = catchAsync(async (req: Request, res: Response) => {
   const isDeviceMobile = await isMobile(req.headers["user-agent"] || "");
 
   if (!existingRefreshToken) {
+    clearJWTCookies(res);
     throw new AppError("Refresh token not found", HTTP_STATUS.UNAUTHORIZED);
   }
 
@@ -30,19 +32,22 @@ export const refreshToken = catchAsync(async (req: Request, res: Response) => {
 
   // Compare user id
   if (session.userId !== decoded.userId) {
-    // We Delete the session here
+    await prisma.session.delete({ where: { id: session.id } });
+    clearJWTCookies(res);
     throw new AppError("Unauthorized", HTTP_STATUS.UNAUTHORIZED);
   }
 
   //   Check IP and user agent mismatch
   if (session.ipAddress !== ipAddress || session.userAgent !== userAgent) {
-    // We Delete the session here
+    await prisma.session.delete({ where: { id: session.id } });
+    clearJWTCookies(res);
     throw new AppError("Unauthorized", HTTP_STATUS.UNAUTHORIZED);
   }
 
   //   Check if the session is valid
-  if (session.expiresAt < new Date(Date.now())) {
-    // We Delete the session here
+  if (session.expiresAt < new Date()) {
+    await prisma.session.delete({ where: { id: session.id } });
+    clearJWTCookies(res);
     throw new AppError("Unauthorized", HTTP_STATUS.UNAUTHORIZED);
   }
 
@@ -71,6 +76,7 @@ export const refreshToken = catchAsync(async (req: Request, res: Response) => {
   });
 
   if (!updatedSession) {
+    clearJWTCookies(res);
     throw new AppError(
       "Failed to refresh token, please login again",
       HTTP_STATUS.UNAUTHORIZED

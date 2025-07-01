@@ -16,12 +16,12 @@ export const getSessionByRefreshToken = async (refreshToken: string) => {
   });
 
   if (!session) {
-    // We Delete the refresh token here
+    await prisma.refreshToken.deleteMany({ where: { token: refreshToken } });
     throw new AppError("Session not found", HTTP_STATUS.UNAUTHORIZED);
   }
 
-  if (session.refreshToken!.expiresAt < new Date(Date.now())) {
-    // We Delete the refresh token here
+  if (session.refreshToken!.expiresAt < new Date()) {
+    await prisma.refreshToken.deleteMany({ where: { token: refreshToken } });
     throw new AppError("Refresh token expired", HTTP_STATUS.UNAUTHORIZED);
   }
 

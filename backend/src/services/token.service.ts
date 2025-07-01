@@ -58,10 +58,16 @@ export const verifyJWTToken = async (
     return decoded;
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {
-      throw new AppError(`${type} Token expired`, HTTP_STATUS.UNAUTHORIZED);
+      throw new AppError(
+        `${type} Token expired. Please login again.`,
+        HTTP_STATUS.UNAUTHORIZED
+      );
     }
     if (error instanceof jwt.JsonWebTokenError) {
-      throw new AppError("Invalid token", HTTP_STATUS.UNAUTHORIZED);
+      throw new AppError(
+        "Invalid token. Please login again.",
+        HTTP_STATUS.UNAUTHORIZED
+      );
     }
 
     throw new Error("Invalid token");
@@ -129,4 +135,24 @@ export const handleJWTTokens = (
   });
 
   return;
+};
+
+export const clearJWTCookies = (res: Response) => {
+  const cookieOptions: CookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    domain: process.env.NODE_ENV === "production" ? COOKIE_DOMAIN : undefined,
+    path: "/",
+  };
+
+  res.cookie("refreshToken", "", {
+    ...cookieOptions,
+    maxAge: 0,
+  });
+
+  res.cookie("accessToken", "", {
+    ...cookieOptions,
+    maxAge: 0,
+  });
 };
