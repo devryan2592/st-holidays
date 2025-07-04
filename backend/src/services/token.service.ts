@@ -11,6 +11,7 @@ import {
   ONE_WEEK_IN_MS,
 } from "@/constants";
 import { AppError } from "@/utils/error";
+import crypto from "crypto";
 
 export const generateTwoFactorToken = async (length: number = 6) => {
   const min = Math.pow(10, length - 1);
@@ -155,4 +156,13 @@ export const clearJWTCookies = (res: Response) => {
     ...cookieOptions,
     maxAge: 0,
   });
+};
+
+// Generate a verification token with a 1 hour expiry (reset token)
+export const generateVerificationToken = () => {
+  const token = crypto.randomBytes(32).toString("hex");
+  const expiresAt = new Date();
+  expiresAt.setHours(expiresAt.getHours() + 1);
+
+  return { token, expiresAt };
 };

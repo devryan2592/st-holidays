@@ -21,8 +21,9 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  sessions        Session[]
-  twoFactorTokens TwoFactorToken[]
+  sessions           Session[]
+  twoFactorTokens    TwoFactorToken[]
+  resetPasswordToken ResetPasswordToken?
 
   @@index([email])
   @@map("users")
@@ -34,7 +35,6 @@ model Session {
   user   User   @relation(fields: [userId], references: [id])
 
   lastUsed  DateTime @default(now()) @map("last_used")
-  expiresAt DateTime @map("expires_at")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -43,23 +43,11 @@ model Session {
   userAgent  String
   deviceType String?
 
-  refreshToken RefreshToken?
+  refreshToken String   @unique @map("refresh_token")
+  expiresAt    DateTime @map("expires_at") // This will be used to expire the refresh token
 
-  @@index([userId, expiresAt])
+  @@index([refreshToken])
   @@map("sessions")
-}
-
-model RefreshToken {
-  id        String   @id @default(uuid())
-  sessionId String   @unique
-  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  token     String   @unique
-  expiresAt DateTime @map("expires_at")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@index([sessionId])
-  @@map("refresh_tokens")
 }
 
 model TwoFactorToken {
@@ -73,4 +61,17 @@ model TwoFactorToken {
 
   @@index([userId, expiresAt])
   @@map("two_factor_tokens")
+}
+
+model ResetPasswordToken {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([userId, expiresAt])
+  @@map("reset_password_tokens")
 }

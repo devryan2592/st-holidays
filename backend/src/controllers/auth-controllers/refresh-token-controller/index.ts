@@ -62,16 +62,10 @@ export const refreshToken = catchAsync(async (req: Request, res: Response) => {
     data: {
       lastUsed: new Date(),
       expiresAt: new Date(Date.now() + ONE_WEEK_IN_MS),
-      refreshToken: {
-        update: {
-          token: tokens.refreshToken,
-          expiresAt: new Date(Date.now() + ONE_WEEK_IN_MS),
-        },
-      },
+      refreshToken: tokens.refreshToken,
     },
     include: {
       user: true,
-      refreshToken: true,
     },
   });
 

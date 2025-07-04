@@ -5,25 +5,45 @@ import { AppError } from "@/utils/error";
 export const getSessionByRefreshToken = async (refreshToken: string) => {
   const session = await prisma.session.findFirst({
     where: {
-      refreshToken: {
-        token: refreshToken,
-      },
+      refreshToken: refreshToken,
     },
     include: {
-      refreshToken: true,
       user: true,
     },
   });
 
   if (!session) {
-    await prisma.refreshToken.deleteMany({ where: { token: refreshToken } });
     throw new AppError("Session not found", HTTP_STATUS.UNAUTHORIZED);
   }
 
-  if (session.refreshToken!.expiresAt < new Date()) {
-    await prisma.refreshToken.deleteMany({ where: { token: refreshToken } });
-    throw new AppError("Refresh token expired", HTTP_STATUS.UNAUTHORIZED);
+  return session;
+};
+
+export const getSessionByEmail = async (email: string) => {
+  const session = await prisma.session.findFirst({
+    where: {
+      user: {
+        email: email,
+      },
+    },
+    include: {
+      user: true,
+    },
+  });
+
+  if (!session) {
+    throw new AppError("Session not found", HTTP_STATUS.UNAUTHORIZED);
   }
 
   return session;
+};
+
+export const deleteSessionByEmail = async (email: string) => {
+  await prisma.session.deleteMany({
+    where: {
+      user: {
+        email: email.toLowerCase(),
+      },
+    },
+  });
 };

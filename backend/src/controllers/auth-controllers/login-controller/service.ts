@@ -87,9 +87,7 @@ const createAndSendTokensAndSession = async (
     const existingSession = await prisma.session.findFirst({
       where: {
         userId: user.id,
-        refreshToken: {
-          token: refreshToken,
-        },
+        refreshToken: refreshToken,
       },
     });
 
@@ -105,12 +103,7 @@ const createAndSendTokensAndSession = async (
           userAgent: userAgent,
           ipAddress: ipAddress,
           expiresAt: new Date(Date.now() + ONE_WEEK_IN_MS), // 1 week
-          refreshToken: {
-            update: {
-              token: newRefreshToken,
-              expiresAt: new Date(Date.now() + ONE_WEEK_IN_MS), // 1 week
-            },
-          },
+          refreshToken: newRefreshToken,
         },
       });
     }
@@ -136,12 +129,7 @@ const createAndSendTokensAndSession = async (
           userAgent: userAgent,
           ipAddress: ipAddress,
           expiresAt: new Date(Date.now() + ONE_WEEK_IN_MS), // 1 week
-          refreshToken: {
-            update: {
-              token: newRefreshToken,
-              expiresAt: new Date(Date.now() + ONE_WEEK_IN_MS), // 1 week
-            },
-          },
+          refreshToken: newRefreshToken,
         },
       });
     }
@@ -156,12 +144,7 @@ const createAndSendTokensAndSession = async (
         userAgent,
         deviceType: mobile ? "mobile" : "desktop",
         expiresAt: new Date(Date.now() + ONE_WEEK_IN_MS), // 1 week
-        refreshToken: {
-          create: {
-            token: newRefreshToken,
-            expiresAt: new Date(Date.now() + ONE_WEEK_IN_MS), // 1 week
-          },
-        },
+        refreshToken: newRefreshToken,
       },
     });
   }
