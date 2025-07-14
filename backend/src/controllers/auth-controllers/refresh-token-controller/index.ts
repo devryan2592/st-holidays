@@ -14,6 +14,18 @@ import { getClientIP, isMobile } from "@/services/ip-device.service";
 import prisma from "@/config/db";
 import { sendSuccess } from "@/helpers/api-resonse";
 
+/**
+ * @swagger
+ * /api/v1/auth/refresh-token:
+ *   post:
+ *     tags: [Authentication]
+ *     summary: Refresh access token using refresh token
+ *     responses:
+ *       200:
+ *         description: Tokens refreshed successfully
+ *       401:
+ *         description: Invalid or expired refresh token
+ */
 export const refreshToken = catchAsync(async (req: Request, res: Response) => {
   const { refreshToken: existingRefreshToken } = await getJWTTokens(req);
   const ipAddress = await getClientIP(req);
@@ -29,6 +41,11 @@ export const refreshToken = catchAsync(async (req: Request, res: Response) => {
 
   // First we get the session with refresh token
   const session = await getSessionByRefreshToken(existingRefreshToken);
+
+  if (!session) {
+    clearJWTCookies(res);
+    throw new AppError("Unauthorized", HTTP_STATUS.UNAUTHORIZED);
+  }
 
   // Compare user id
   if (session.userId !== decoded.userId) {

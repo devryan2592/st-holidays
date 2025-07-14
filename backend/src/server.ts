@@ -7,8 +7,10 @@ import compression from "compression";
 import { engine } from "express-handlebars";
 import path from "path";
 import indexRouter from "@/routes";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger/swagger.config";
 import { errorHandler } from "./middlewares/errorHandler";
-import corsOptions from "./config/swagger/cors/cors-options";
+import corsOptions from "./config/cors/cors-options";
 const app: Express = express();
 
 // View engine setup
@@ -16,8 +18,8 @@ app.engine(
   "hbs",
   engine({
     extname: ".hbs",
-    defaultLayout: "main",
-    layoutsDir: path.join(__dirname, "views/layouts"),
+    defaultLayout: "landing",
+    layoutsDir: path.join(__dirname, "views"),
   })
 );
 app.set("view engine", "hbs");
@@ -31,16 +33,26 @@ app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// // Serve static files
-// app.use(express.static(path.join(__dirname, "public")));
+// Serve static files
+app.use(express.static(path.join(__dirname, "public")));
 
-// // Main page route
-// app.get("/", (_req, res) => {
-//   res.render("landing", {
-//     title: "Complete Auth System",
-//     description: "Modern Authentication System API",
-//   });
-// });
+// Main page route
+app.get("/", (_req, res) => {
+  res.render("landing", {
+    title: "Complete Auth System",
+    description: "Modern Authentication System API",
+  });
+});
+
+// Swagger Documentation Route
+app.use(
+  "/api/v1/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    customCss: ".swagger-ui .topbar { display: none }",
+    customSiteTitle: "Complete Auth System API",
+  })
+);
 
 // Routes
 app.use("/api/v1", indexRouter);

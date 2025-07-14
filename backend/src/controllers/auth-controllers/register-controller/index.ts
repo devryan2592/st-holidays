@@ -10,6 +10,34 @@ import { RegisterUserResponse, registerUserSchema } from "./schema";
 import { registerUserService } from "./service";
 import { HTTP_STATUS } from "@/constants";
 
+/**
+ * @swagger
+ * /api/v1/auth/register:
+ *   post:
+ *     tags: [Authentication]
+ *     summary: Register a new user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 minLength: 8
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *       400:
+ *         description: Invalid input or user already exists
+ */
 export const registerUser = catchAsync(
   async (req: Request, res: Response<ApiResponse<RegisterUserResponse>>) => {
     // Validate Request Body

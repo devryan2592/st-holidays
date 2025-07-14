@@ -1,0 +1,63 @@
+import { FC } from "react";
+import {
+  Breadcrumb,
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+interface PageBreadCrumbsProps {
+  // Add your props here
+  children?: React.ReactNode;
+}
+
+const PageBreadCrumbs: FC<PageBreadCrumbsProps> = ({ children }) => {
+  return (
+    <Breadcrumb>
+      <BreadcrumbList className="bg-background border px-2 py-[1px] shadow-xs rounded-sm">
+        <BreadcrumbItem>
+          <BreadcrumbLink href="#">Home</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="hover:text-foreground">
+              <BreadcrumbEllipsis />
+              <span className="sr-only">Toggle menu</span>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              <DropdownMenuItem asChild>
+                <a href="#">Documentation</a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <a href="#">Themes</a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <a href="#">GitHub</a>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink href="#">Components</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+};
+
+export default PageBreadCrumbs;

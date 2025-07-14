@@ -23,6 +23,10 @@ const options: swaggerJsdoc.Options = {
         url: "http://localhost:8000/api/v1",
         description: "Development server",
       },
+      {
+        url: "https://your-production-domain.com/api/v1",
+        description: "Production server",
+      },
     ],
     components: {
       securitySchemes: {
@@ -34,7 +38,7 @@ const options: swaggerJsdoc.Options = {
       },
     },
   },
-  apis: ["./src/routes/*.ts", "./src/controllers/**/*.ts"], // Path to the API docs
+  apis: ["./src/controllers/**/*.ts"], // Path to the API docs
 };
 
 export const swaggerSpec = swaggerJsdoc(options);

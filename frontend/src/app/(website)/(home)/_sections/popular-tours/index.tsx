@@ -19,7 +19,7 @@ const PopularTours: FC<PopularToursProps> = ({ children }) => {
         <h2 className="text-4xl font-bold font-poppins leading-12 uppercase ">
           Discover Our Most Popular Tours
         </h2>
-        <p className=" text-muted-foreground">
+        <p className="text-muted-foreground">
           Explore our bestselling tours, handpicked for unforgettable adventures
           in Dubai and beyond.
         </p>

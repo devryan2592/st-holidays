@@ -18,6 +18,16 @@ export const forgotPasswordService = async (
   }
 
   //  Generate Reset Token
+  const existingToken = await prisma.resetPasswordToken.findFirst({
+    where: { userId: user.id },
+  });
+
+  if (existingToken) {
+    await prisma.resetPasswordToken.delete({
+      where: { id: existingToken.id },
+    });
+  }
+
   const resetToken = await generateVerificationToken();
 
   // Send Email

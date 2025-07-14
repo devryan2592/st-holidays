@@ -1,6 +1,5 @@
 import { Response, Router } from "express";
-import swaggerUi from "swagger-ui-express";
-import { swaggerSpec } from "@/config/swagger/swagger.config";
+
 import { HTTP_STATUS } from "@/constants";
 import authRoutes from "./auth.routes";
 // import userRoutes from "./user.routes";
@@ -14,15 +13,7 @@ router.get("/health", (_, res: Response) => {
   });
 });
 
-// Swagger Documentation Route
-router.use(
-  "/docs",
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerSpec, {
-    customCss: ".swagger-ui .topbar { display: none }",
-    customSiteTitle: "Complete Auth System API",
-  })
-);
+
 
 // Auth Routes
 router.use("/auth", authRoutes);

@@ -6,6 +6,14 @@ import Heading from "./heading";
 import Links from "./links";
 import Copyright from "./copyright";
 import Image from "next/image";
+import {
+  FacebookIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  XIcon,
+  YoutubeIcon,
+} from "@/components/icons/social";
+import SocialLink from "./social-link";
 
 interface FooterProps {
   // Add your props here
@@ -71,17 +79,24 @@ const Footer: FC<FooterProps> = ({ children }) => {
       </div>
       <div className="container max-w-7xl mx-auto px-8 ">
         <Separator />
-        <div className="flex flex-col items-center justify-center py-4 gap-2">
+        <div className="flex flex-row items-center justify-between py-4 gap-2">
           <Copyright />
-          <div className="flex items-center justify-center gap-2">
-            <div className="relative h-10 w-10 rounded-full border  border-primary-foreground hover:border-none hover:bg-accent hover:text-white flex items-center justify-center transition-all duration-300">
-              <Image
-                src="/svg/facebook.svg"
-                alt="Facebook"
-                fill
-                className="p-1 "
-              />
-            </div>
+          <div className="flex items-center justify-center gap-2 mt-1">
+            <SocialLink>
+              <FacebookIcon className="h-4 w-4 hover:fill-accent cursor-pointer" />
+            </SocialLink>
+            <SocialLink>
+              <InstagramIcon className="h-4 w-4 hover:fill-accent cursor-pointer" />
+            </SocialLink>
+            <SocialLink>
+              <XIcon className="h-4 w-4 hover:fill-accent cursor-pointer" />
+            </SocialLink>
+            <SocialLink>
+              <LinkedinIcon className="h-4 w-4 hover:fill-accent cursor-pointer" />
+            </SocialLink>
+            <SocialLink>
+              <YoutubeIcon className="h-4 w-4 hover:fill-accent cursor-pointer" />
+            </SocialLink>
           </div>
         </div>
         <Separator />

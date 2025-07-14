@@ -17,6 +17,33 @@ import { HTTP_STATUS } from "@/constants";
 import { getClientIP, isMobile } from "@/services/ip-device.service";
 import { getJWTTokens, handleJWTTokens } from "@/services/token.service";
 
+/**
+ * @swagger
+ * /api/v1/auth/login:
+ *   post:
+ *     tags: [Authentication]
+ *     summary: Login user and get 2FA code
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: 2FA code sent successfully
+ *       401:
+ *         description: Invalid credentials
+ */
 export const loginUser = catchAsync(
   async (req: Request, res: Response<ApiResponse<LoginResponse>>) => {
     const { data, success, error } = loginUserSchema.safeParse(req.body);
@@ -34,6 +61,35 @@ export const loginUser = catchAsync(
   }
 );
 
+/**
+ * @swagger
+ * /api/v1/auth/2fa-login:
+ *   post:
+ *     tags: [Authentication]
+ *     summary: Complete login with 2FA code
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userId
+ *               - token
+ *             properties:
+ *               userId:
+ *                 type: string
+ *                 format: uuid
+ *               token:
+ *                 type: string
+ *                 minLength: 6
+ *                 maxLength: 6
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       401:
+ *         description: Invalid or expired 2FA code
+ */
 export const twoFactorLogin = catchAsync(
   async (req: Request, res: Response<ApiResponse<TwoFactorLoginResponse>>) => {
     const { refreshToken } = await getJWTTokens(req);

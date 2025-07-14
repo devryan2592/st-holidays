@@ -1,5 +1,6 @@
 import { FC } from "react";
 import BlogCard from "./blog-card";
+import AutoPlayCarousel from "@/components/custom-ui/autoplay-carousel";
 
 interface FeaturedBlogsProps {
   // Add your props here
@@ -23,10 +24,10 @@ const FeaturedBlogs: FC<FeaturedBlogsProps> = ({ children }) => {
       </div>
 
       <div className="mt-10">
-        <div className="grid lg:grid-cols-2 gap-4">
+        <AutoPlayCarousel className="lg:basis-1/2">
           <BlogCard />
           <BlogCard />
-        </div>
+        </AutoPlayCarousel>
       </div>
     </section>
   );
