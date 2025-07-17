@@ -75,3 +75,97 @@ model ResetPasswordToken {
   @@index([userId, expiresAt])
   @@map("reset_password_tokens")
 }
+
+model Destination {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  thumbnail   String?
+  images      String[]
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  cities City[]
+  tours  Tour[]
+
+  @@map("destinations")
+}
+
+model City {
+  id            String   @id @default(uuid())
+  name          String
+  slug          String   @unique
+  description   String?
+  thumbnail     String?
+  images        String[]
+  destinationId String
+  destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  tours            Tour[]
+  attractions      Attraction[]
+
+  @@unique([destinationId, name])
+  @@map("cities")
+}
+
+model Tour {
+  id             String       @id @default(uuid())
+  name           String       @unique
+  slug           String       @unique
+  description    String
+  duration       String
+  theme          String?
+  packageType    String?
+  price          Decimal      @db.Decimal(10, 2)
+  offerPrice     Decimal?     @db.Decimal(10, 2)
+  thumbnail      String?
+  images         String[]
+  highlights     String[]
+  inclusions     String[]
+  exclusions     String[]
+  terms          String[]
+  destinationId  String
+  destination    Destination  @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+
+  cities           City[]
+  itinerary        DayItineraryItem[]
+
+  @@map("tours")
+}
+
+model Attraction {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  thumbnail   String?
+  images      String[]
+  cityId      String
+  city        City     @relation(fields: [cityId], references: [id])
+}
+
+enum Meals {
+  BREAKFAST
+  LUNCH
+  DINNER
+}
+
+model DayItineraryItem {
+  id          String   @id @default(uuid())
+  tourId      String
+  tour        Tour     @relation(fields: [tourId], references: [id])
+  dayNumber   Int
+  title       String
+  description String
+  images      String[]
+  meals       Meals[]
+  duration    Int?
+
+  @@unique([tourId, dayNumber])
+}

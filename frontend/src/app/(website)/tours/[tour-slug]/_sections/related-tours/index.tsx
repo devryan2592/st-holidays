@@ -1,6 +1,6 @@
 import AutoPlayCarousel from "@/components/custom-ui/autoplay-carousel";
 import { FC } from "react";
-import TourCard from "./tour-card";
+import TourCard from "@/components/common/tour/tour-card";
 
 interface RelatedToursProps {
   // Add your props here
@@ -9,7 +9,7 @@ interface RelatedToursProps {
 
 const RelatedTours: FC<RelatedToursProps> = ({ children }) => {
   return (
-    <AutoPlayCarousel className="md:basis-1/2 lg:basis-1/3">
+    <AutoPlayCarousel className="md:basis-1/2 lg:basis-1/3 overflow-visible">
       <TourCard />
       <TourCard />
       <TourCard />

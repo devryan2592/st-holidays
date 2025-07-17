@@ -81,7 +81,7 @@ const TourDetails: NextPage<TourDetailsProps> = (props) => {
 
       {/* Related Tours */}
       <div className="bg-secondary mt-10">
-        <div className="container py-10 px-8 mx-auto max-w-7xl">
+        <div className="container py-20 px-8 mx-auto max-w-7xl">
           <h2 className="text-2xl font-bold font-poppins leading-10 uppercase ">
             Explore Related Tours
           </h2>
@@ -90,7 +90,7 @@ const TourDetails: NextPage<TourDetailsProps> = (props) => {
             think you'll love.
           </p>
 
-          <div className="mt-6 ">
+          <div className="mt-6">
             <RelatedTours />
           </div>
         </div>

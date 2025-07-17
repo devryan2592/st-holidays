@@ -28,7 +28,7 @@ const AutoPlayCarousel: FC<AutoPlayCarouselProps> = ({
     Autoplay({
       delay: autoplayDelay,
       stopOnInteraction: false,
-      stopOnMouseEnter: false,
+      stopOnMouseEnter: true,
     })
   );
 
@@ -58,10 +58,20 @@ const AutoPlayCarousel: FC<AutoPlayCarouselProps> = ({
   }, [carouselApi]);
 
   return (
-    <Carousel>
+    <Carousel
+      setApi={setCarouselApi}
+      plugins={[plugin.current]}
+      opts={{
+        loop: true,
+      }}
+      className="carousel cursor-grab"
+    >
       <CarouselContent>
         {React.Children.map(children, (child, index) => (
-          <CarouselItem key={index} className={className}>
+          <CarouselItem
+            key={index}
+            className={cn("h-full overflow-visible", className)}
+          >
             {child}
           </CarouselItem>
         ))}
