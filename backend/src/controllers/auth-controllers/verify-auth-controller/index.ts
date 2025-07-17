@@ -6,7 +6,7 @@ import { HTTP_STATUS } from "@/constants";
 
 /**
  * @swagger
- * /api/v1/auth/verify-auth:
+ * /api/v1/auth/verify:
  *   get:
  *     tags: [Authentication]
  *     summary: Verify authentication status

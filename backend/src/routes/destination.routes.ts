@@ -6,18 +6,19 @@ import {
   getSingleDestinationController,
   updateDestinationController,
 } from "../controllers/destination-controllers";
+import { authMiddleware } from "@/middlewares/auth-middleware";
 
 const router = Router();
 
 router
   .route("/")
   .get(getAllDestinationsController)
-  .post(createDestinationController);
+  .post(authMiddleware, createDestinationController);
 
 router
   .route("/:id")
   .get(getSingleDestinationController)
-  .patch(updateDestinationController)
-  .delete(deleteDestinationController);
+  .patch(authMiddleware, updateDestinationController)
+  .delete(authMiddleware, deleteDestinationController);
 
 export default router;
