@@ -6,7 +6,7 @@ import {
   sendError,
   sendSuccess,
   sendZodError,
-} from "@/helpers/api-resonse";
+} from "@/helpers/api-response";
 import {
   LoginResponse,
   loginUserSchema,
@@ -48,6 +48,7 @@ export const loginUser = catchAsync(
   async (req: Request, res: Response<ApiResponse<LoginResponse>>) => {
     const { data, success, error } = loginUserSchema.safeParse(req.body);
 
+    console.log(error);
     if (!success) return sendZodError(res, error);
 
     const response = await loginUserService(data);

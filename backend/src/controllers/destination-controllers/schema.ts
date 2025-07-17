@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { Destination } from "../../../generated/prisma";
-import { ApiResponse } from "@/helpers/api-resonse";
+import { ApiResponse } from "@/helpers/api-response";
 
 export const createDestinationSchema = z.object({
-  name: z.string(),
+  name: z.string({ required_error: "Name is required" }).min(3),
   slug: z.string().optional(),
   description: z.string().optional(),
   thumbnail: z.string().optional(),

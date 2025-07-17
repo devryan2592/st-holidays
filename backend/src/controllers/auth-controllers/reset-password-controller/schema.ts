@@ -1,4 +1,4 @@
-import { ApiResponse } from "@/helpers/api-resonse";
+import { ApiResponse } from "@/helpers/api-response";
 
 import { z } from "zod";
 

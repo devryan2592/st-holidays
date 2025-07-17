@@ -20,11 +20,11 @@ const options: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: "http://localhost:8000/api/v1",
+        url: "http://localhost:8000",
         description: "Development server",
       },
       {
-        url: "https://your-production-domain.com/api/v1",
+        url: "https://your-production-domain.com",
         description: "Production server",
       },
     ],

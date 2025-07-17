@@ -1,15 +1,20 @@
-// import { Router } from 'express';
-// import { createCity, deleteCity, getCity, getCities, updateCity } from '../controllers/city-controllers';
+import { Router } from "express";
+import {
+  createCityController,
+  deleteCityController,
+  getAllCitiesController,
+  getSingleCityController,
+  updateCityController,
+} from "../controllers/city-controllers";
 
-// const router = Router();
+const router = Router();
 
-// router.route('/')
-//   .post(createCity)
-//   .get(getCities);
+router.route("/").post(createCityController).get(getAllCitiesController);
 
-// router.route('/:id')
-//   .get(getCity)
-//   .patch(updateCity)
-//   .delete(deleteCity);
+router
+  .route("/:id")
+  .get(getSingleCityController)
+  .patch(updateCityController)
+  .delete(deleteCityController);
 
-// export default router;
+export default router;

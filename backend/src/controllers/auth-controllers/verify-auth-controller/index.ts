@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { catchAsync } from "@/helpers/catch-async";
-import { sendError, sendSuccess } from "@/helpers/api-resonse";
+import { sendError, sendSuccess } from "@/helpers/api-response";
 import { verifyAuthService } from "./service";
 import { HTTP_STATUS } from "@/constants";
 

@@ -12,7 +12,7 @@ import { HTTP_STATUS, ONE_WEEK_IN_MS } from "@/constants";
 import { getSessionByRefreshToken } from "@/helpers/database-calls/session";
 import { getClientIP, isMobile } from "@/services/ip-device.service";
 import prisma from "@/config/db";
-import { sendSuccess } from "@/helpers/api-resonse";
+import { sendSuccess } from "@/helpers/api-response";
 
 /**
  * @swagger

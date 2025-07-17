@@ -4,7 +4,7 @@ import {
   sendError,
   sendSuccess,
   sendZodError,
-} from "@/helpers/api-resonse";
+} from "@/helpers/api-response";
 import { catchAsync } from "@/helpers/catch-async";
 import { RegisterUserResponse, registerUserSchema } from "./schema";
 import { registerUserService } from "./service";

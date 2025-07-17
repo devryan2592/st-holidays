@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { catchAsync } from "@/helpers/catch-async";
-import { ApiResponse, sendSuccess, sendZodError } from "@/helpers/api-resonse";
+import { ApiResponse, sendSuccess, sendZodError } from "@/helpers/api-response";
 import { forgotPasswordSchema, resetPasswordSchema } from "./schema";
 import { HTTP_STATUS } from "@/constants";
 import { forgotPasswordService, resetPasswordService } from "./service";

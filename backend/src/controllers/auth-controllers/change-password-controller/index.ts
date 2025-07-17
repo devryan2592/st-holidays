@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { catchAsync } from "@/helpers/catch-async";
 import { changePasswordSchema } from "./schema";
-import { sendError, sendSuccess, sendZodError } from "@/helpers/api-resonse";
+import { sendError, sendSuccess, sendZodError } from "@/helpers/api-response";
 import { changePasswordService } from "./service";
 import { HTTP_STATUS } from "@/constants";
 
