@@ -1,5 +1,7 @@
+import DashboardHeader from "@/components/dashboard/header";
+import PageLayout from "@/components/dashboard/page-layout";
 import DashboardSidebar from "@/components/dashboard/sidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import React from "react";
 
 interface DashboardLayoutLayoutProps {
@@ -12,7 +14,10 @@ export default function DashboardLayoutLayout({
   return (
     <SidebarProvider>
       <DashboardSidebar />
-      {children}
+      <SidebarInset className="relative overflow-x-hidden">
+        <DashboardHeader />
+        <PageLayout>{children}</PageLayout>
+      </SidebarInset>
     </SidebarProvider>
   );
 }

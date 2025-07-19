@@ -73,6 +73,28 @@ export function getMenuList(): MenuList[] {
       ],
     },
     {
+      title: "Tours",
+      url: "/tours",
+      icon: SquarePen,
+      items: [
+        {
+          title: "Itinerary",
+          url: "/itinerary",
+          icon: SquarePen,
+        },
+        {
+          title: "Destinations",
+          url: "/destinations",
+          icon: Bookmark,
+        },
+        {
+          title: "Cities",
+          url: "/cities",
+          icon: Bookmark,
+        },
+      ],
+    },
+    {
       title: "Settings",
       url: "/settings",
       icon: Settings,

@@ -103,7 +103,9 @@ const DashboardSidebar: FC<DashboardSidebarProps> = ({ children }) => {
                             {item.items?.map((subItem) => (
                               <SidebarMenuSubItem key={subItem.title}>
                                 <SidebarMenuSubButton asChild>
-                                  <Link href={subItem.url}>
+                                  <Link
+                                    href={`/admin-dashboard${item.url}${subItem.url}`}
+                                  >
                                     {subItem.icon && <subItem.icon />}
                                     <span>{subItem.title}</span>
                                   </Link>
@@ -117,7 +119,7 @@ const DashboardSidebar: FC<DashboardSidebarProps> = ({ children }) => {
                   ) : (
                     <SidebarMenuItem>
                       <SidebarMenuButton tooltip={item.title} asChild>
-                        <Link href={item.url}>
+                        <Link href={`/admin-dashboard${item.url}`}>
                           {item.icon && <item.icon />}
                           <span>{item.title}</span>
                         </Link>
