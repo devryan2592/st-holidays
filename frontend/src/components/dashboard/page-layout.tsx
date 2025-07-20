@@ -17,12 +17,12 @@ const PageLayout: FC<PageLayoutProps> = ({ children }) => {
   return (
     <main
       className={cn(
-        "fixed top-16 left-64 right-0 bottom-0 overflow-y-auto transition-all duration-300",
-        !open && !isMobile && "top-12 left-16",
-        isMobile && "top-16 left-0"
+        "relayive mt-16 overflow-y-auto transition-all duration-300  max-h-[calc(100vh-64px)] h-full",
+        !open && !isMobile && "mt-12 max-h-[calc(100vh-48px)]",
+        isMobile && "mt-16 "
       )}
     >
-      <div className="p-4 overflow-y-auto">{children}</div>
+      <div className={cn("p-4 overflow-y-auto")}>{children}</div>
     </main>
   );
 };

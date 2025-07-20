@@ -21,8 +21,8 @@ const DashboardHeader: FC<DashboardHeaderProps> = ({ children }) => {
   return (
     <header
       className={cn(
-        "flex items-center justify-between h-16 border-b transition-all duration-300 py-2 absolute right-0 top-0 left-0 z-50 bg-sidebar-primary-foreground dark:bg-sidebar",
-        !open && !isMobile && "h-12 left-0",
+        "fixed flex items-center justify-between h-16 border-b transition-all duration-300 py-2 right-0 top-0 left-64 z-50 bg-sidebar-primary-foreground dark:bg-sidebar",
+        !open && !isMobile && "h-12 left-12",
         isMobile && "h-16 left-0"
       )}
     >
@@ -37,15 +37,23 @@ const DashboardHeader: FC<DashboardHeaderProps> = ({ children }) => {
             <Menu />
           </Button>
         </div>
-        {/* <div className="flex items-center gap-2">
-          <QuickAddDropdown />
+        <div className="flex items-center gap-2">
+          {/* <QuickAddDropdown />
           <div className="h-7 w-px bg-border mx-2" />
           <MessagesDropdown />
           <NotificationDropdown />
           <div className="h-7 w-px bg-border mx-2" />
 
-          <ThemeToggle />
-        </div> */}
+          <ThemeToggle /> */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebar}
+            className="ml-2"
+          >
+            <Menu />
+          </Button>
+        </div>
       </div>
     </header>
   );

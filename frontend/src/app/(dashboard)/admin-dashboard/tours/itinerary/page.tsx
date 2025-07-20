@@ -1,3 +1,5 @@
+import PageHeader from "@/components/dashboard/page-header";
+import ItineraryTable from "@/components/dashboard/tables/itinerary-table";
 import { NextPage } from "next";
 
 interface ItineraryPageProps {
@@ -6,9 +8,12 @@ interface ItineraryPageProps {
 
 const ItineraryPage: NextPage<ItineraryPageProps> = (props) => {
   return (
-    <div>
-      <h1>ItineraryPage Page</h1>
-      ItineraryPage
+    <div className="flex flex-col gap-6">
+      <PageHeader
+        title="Itinerary"
+        description="Create and manage your travel itineraries with ease."
+      />
+      <ItineraryTable />
     </div>
   );
 };
