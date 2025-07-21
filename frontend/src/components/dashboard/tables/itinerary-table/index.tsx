@@ -67,6 +67,11 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { dummyItems, Item } from "@/lib/dummy-data";
 import { columns } from "./colums";
 import DurationFilter from "./filters/duration-filter";
+import PriceFilter from "./filters/price-filter";
+import SearchFilter from "./filters/search-filter";
+import StatusFilter from "./filters/status-filter";
+import ViewFilter from "./filters/view-filter";
+import DestinationFilter from "./filters/destination-filter";
 // import ContactDrawer from "@/components/drawers/contact-drawer";
 
 interface ItineraryTableProps {
@@ -91,16 +96,6 @@ const ItineraryTable: FC<ItineraryTableProps> = ({ children }) => {
   ]);
 
   const [data, setData] = useState<Item[]>(dummyItems);
-  useEffect(() => {
-    async function fetchPosts() {
-      const res = await fetch(
-        "https://res.cloudinary.com/dlzlfasou/raw/upload/users-01_fertyx.json"
-      );
-      const data = await res.json();
-      setData(data);
-    }
-    fetchPosts();
-  }, []);
 
   const handleDeleteRows = () => {
     const selectedRows = table.getSelectedRowModel().rows;
@@ -132,19 +127,23 @@ const ItineraryTable: FC<ItineraryTableProps> = ({ children }) => {
     },
   });
 
-  console.log("Filtered Values", table.getFilteredRowModel().rows);
   return (
     <div className="space-y-4">
       {/* Filters */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           {/* Filter by name or email */}
-
+          <SearchFilter table={table} />
+          {/* Destinations Filter */}
+          <DestinationFilter table={table} />
+          {/* Status Filter */}
+          <StatusFilter table={table} />
           {/* Duration Filter */}
           <DurationFilter table={table} />
           {/* Price Filter */}
-
+          <PriceFilter table={table} />
           {/* Toggle columns visibility */}
+          <ViewFilter table={table} />
         </div>
         <div className="flex items-center gap-3">
           {/* Delete button */}

@@ -2,7 +2,7 @@
 
 import { FC, useMemo } from "react";
 
-import { Table } from "@tanstack/react-table";
+import { FilterFn, Table } from "@tanstack/react-table";
 import { Item } from "@/lib/dummy-data";
 import {
   Popover,
@@ -20,14 +20,34 @@ interface DurationFilterProps {
   table: Table<Item>;
 }
 
+const durationRanges: { [key: string]: [number, number | undefined] } = {
+  "1-3 days": [1, 3],
+  "4-6 days": [4, 6],
+  "7-10 days": [7, 10],
+  "10+ days": [11, undefined],
+};
+
+// Duration Filter
+export const durationFilterFn: FilterFn<Item> = (
+  row,
+  columnId,
+  filterValue: string[]
+) => {
+  if (!filterValue?.length) return true;
+  const duration = row.getValue(columnId) as number;
+
+  const durationFilter = filterValue.some((rangeKey) => {
+    const range = durationRanges[rangeKey];
+    if (!range) return false;
+    const [min, max] = range;
+    return duration >= min && (max === undefined || duration <= max);
+  });
+
+  return durationFilter;
+};
+
 const DurationFilter: FC<DurationFilterProps> = ({ children, table }) => {
   // Duration filter logic
-  const durationRanges: { [key: string]: [number, number | undefined] } = {
-    "1-3 days": [1, 3],
-    "4-6 days": [4, 6],
-    "7-10 days": [7, 10],
-    "10+ days": [11, undefined],
-  };
 
   const durationCounts = useMemo(() => {
     const counts = new Map<string, number>();
@@ -56,8 +76,6 @@ const DurationFilter: FC<DurationFilterProps> = ({ children, table }) => {
     return filterValue ?? [];
   }, [table.getColumn("duration")?.getFilterValue()]);
 
-  console.log("filter Value", selectedDurations);
-
   const handleDurationChange = (checked: boolean, value: string) => {
     const filterValue = table
       .getColumn("duration")
@@ -72,8 +90,6 @@ const DurationFilter: FC<DurationFilterProps> = ({ children, table }) => {
         newFilterValue.splice(index, 1);
       }
     }
-
-    console.log("newFilterValue", newFilterValue);
 
     table
       .getColumn("duration")
@@ -97,7 +113,7 @@ const DurationFilter: FC<DurationFilterProps> = ({ children, table }) => {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto min-w-36 p-3" align="start">
+      <PopoverContent className="w-auto min-w-40 p-3" align="start">
         <div className="space-y-3">
           <div className="text-muted-foreground text-xs font-medium">
             Filters
@@ -112,8 +128,15 @@ const DurationFilter: FC<DurationFilterProps> = ({ children, table }) => {
                     handleDurationChange(checked as boolean, rangeKey)
                   }
                 />
-                <Label htmlFor={rangeKey}>
-                  {rangeKey} ({durationCounts.get(rangeKey) || 0})
+                <Label
+                  htmlFor={rangeKey}
+                  className="flex grow justify-between gap-2 font-normal"
+                >
+                  {rangeKey}{" "}
+                  <span className="text-muted-foreground ms-2 text-xs">
+                    {" "}
+                    ({durationCounts.get(rangeKey) || 0})
+                  </span>
                 </Label>
               </div>
             ))}

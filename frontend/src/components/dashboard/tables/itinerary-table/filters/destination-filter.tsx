@@ -1,6 +1,9 @@
 "use client";
 
 import { FC, useId, useMemo } from "react";
+
+import { FilterFn, Table } from "@tanstack/react-table";
+import { Item } from "@/lib/dummy-data";
 import {
   Popover,
   PopoverTrigger,
@@ -8,54 +11,64 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { FilterIcon } from "lucide-react";
-import { FilterFn, Table } from "@tanstack/react-table";
-import { Item } from "@/lib/dummy-data";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
-interface StatusFilterProps {
-  // Add your props here
-  children?: React.ReactNode;
+interface DestinationFilterProps {
   table: Table<Item>;
 }
 
-export const statusFilterFn: FilterFn<Item> = (
+const destinationList = ["Thailand", "Singapore", "Malaysia", "Dubai", "Bali"];
+
+export const destinationFilterFn: FilterFn<Item> = (
   row,
   columnId,
   filterValue: string[]
 ) => {
   if (!filterValue?.length) return true;
-  const status = row.getValue(columnId) as string;
-  return filterValue.includes(status);
+  const destinations = row.getValue(columnId) as string[];
+  return filterValue.some((filterDest) => destinations.includes(filterDest));
 };
 
-const StatusFilter: FC<StatusFilterProps> = ({ children, table }) => {
+const DestinationFilter: FC<DestinationFilterProps> = ({ table }) => {
   const id = useId();
-  // Get unique status values
-  const uniqueStatusValues = useMemo(() => {
-    const statusColumn = table.getColumn("status");
 
-    if (!statusColumn) return [];
+  const destinationCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    const destinationColumn = table.getColumn("destinations");
+    if (!destinationColumn) return counts;
 
-    const values = Array.from(statusColumn.getFacetedUniqueValues().keys());
+    const uniqueValues = Array.from(
+      destinationColumn.getFacetedUniqueValues().keys()
+    ) as string[];
 
-    return values.sort();
-  }, [table.getColumn("status")?.getFacetedUniqueValues()]);
+    let destinationArray: string[] = [];
+    Object.values(uniqueValues).forEach((key) => {
+      destinationArray.push(...key);
+    });
 
-  // Get counts for each status
-  const statusCounts = useMemo(() => {
-    const statusColumn = table.getColumn("status");
-    if (!statusColumn) return new Map();
-    return statusColumn.getFacetedUniqueValues();
-  }, [table.getColumn("status")?.getFacetedUniqueValues()]);
+    console.log("destinationArray", destinationArray);
 
-  const selectedStatuses = useMemo(() => {
-    const filterValue = table.getColumn("status")?.getFilterValue() as string[];
+    destinationArray.forEach((dest) => {
+      counts.set(dest, destinationArray.filter((d) => d === dest).length);
+    });
+
+    console.log(counts);
+
+    return counts;
+  }, [table.getColumn("destinations")?.getFacetedUniqueValues()]);
+
+  const selectedDestinations = useMemo(() => {
+    const filterValue = table
+      .getColumn("destinations")
+      ?.getFilterValue() as string[];
     return filterValue ?? [];
-  }, [table.getColumn("status")?.getFilterValue()]);
+  }, [table.getColumn("destinations")?.getFilterValue()]);
 
-  const handleStatusChange = (checked: boolean, value: string) => {
-    const filterValue = table.getColumn("status")?.getFilterValue() as string[];
+  const handleDestinationChange = (checked: boolean, value: string) => {
+    const filterValue = table
+      .getColumn("destinations")
+      ?.getFilterValue() as string[];
     const newFilterValue = filterValue ? [...filterValue] : [];
 
     if (checked) {
@@ -68,7 +81,7 @@ const StatusFilter: FC<StatusFilterProps> = ({ children, table }) => {
     }
 
     table
-      .getColumn("status")
+      .getColumn("destinations")
       ?.setFilterValue(newFilterValue.length ? newFilterValue : undefined);
   };
 
@@ -81,10 +94,10 @@ const StatusFilter: FC<StatusFilterProps> = ({ children, table }) => {
             size={16}
             aria-hidden="true"
           />
-          Status
-          {selectedStatuses.length > 0 && (
+          Destination
+          {selectedDestinations.length > 0 && (
             <span className="bg-background text-muted-foreground/70 -me-1 inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium">
-              {selectedStatuses.length}
+              {selectedDestinations.length}
             </span>
           )}
         </Button>
@@ -95,13 +108,13 @@ const StatusFilter: FC<StatusFilterProps> = ({ children, table }) => {
             Filters
           </div>
           <div className="space-y-3">
-            {uniqueStatusValues.map((value, i) => (
+            {destinationList.map((value, i) => (
               <div key={value} className="flex items-center gap-2">
                 <Checkbox
                   id={`${id}-${i}`}
-                  checked={selectedStatuses.includes(value)}
+                  checked={selectedDestinations.includes(value)}
                   onCheckedChange={(checked: boolean) =>
-                    handleStatusChange(checked, value)
+                    handleDestinationChange(checked, value)
                   }
                 />
                 <Label
@@ -110,7 +123,7 @@ const StatusFilter: FC<StatusFilterProps> = ({ children, table }) => {
                 >
                   {value}{" "}
                   <span className="text-muted-foreground ms-2 text-xs">
-                    ({statusCounts.get(value)})
+                    ({destinationCounts.get(value)})
                   </span>
                 </Label>
               </div>
@@ -122,4 +135,4 @@ const StatusFilter: FC<StatusFilterProps> = ({ children, table }) => {
   );
 };
 
-export default StatusFilter;
+export default DestinationFilter;

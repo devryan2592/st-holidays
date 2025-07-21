@@ -14,7 +14,10 @@ import Destination from "./destination";
 import Duration from "./duration";
 import Price from "./price";
 import Status from "./status";
-import { durationFilterFn } from "../filters";
+import { durationFilterFn } from "../filters/duration-filter";
+import { priceFilterFn } from "../filters/price-filter";
+import { statusFilterFn } from "../filters/status-filter";
+import { destinationFilterFn } from "../filters/destination-filter";
 
 // Image, Name with desc, Destinations, duration, price, actions
 export const columns: ColumnDef<Item>[] = [
@@ -49,6 +52,7 @@ export const columns: ColumnDef<Item>[] = [
     enableHiding: false,
   },
   {
+    id: "name",
     header: "Tour Name / Description",
     accessorFn: (row) => `${row.name}) ${row.description}`,
     cell: ({ row }) => <NameDescription row={row} />,
@@ -61,6 +65,7 @@ export const columns: ColumnDef<Item>[] = [
     accessorKey: "destinations",
     cell: ({ row }) => <Destination row={row} />,
     size: 180,
+    filterFn: destinationFilterFn,
   },
   {
     header: "Duration",
@@ -72,11 +77,12 @@ export const columns: ColumnDef<Item>[] = [
     enableHiding: false,
   },
   {
+    id: "price",
     header: "Price",
-    accessorKey: "price",
+    accessorKey: "offer_price",
     cell: ({ row }) => <Price row={row} />,
     size: 100,
-    // filterFn: multiColumnFilterFn,
+    filterFn: priceFilterFn,
     enableHiding: false,
   },
   {
@@ -84,7 +90,7 @@ export const columns: ColumnDef<Item>[] = [
     accessorKey: "status",
     cell: ({ row }) => <Status row={row} />,
     size: 100,
-    // filterFn: statusFilterFn,
+    filterFn: statusFilterFn,
   },
 
   {

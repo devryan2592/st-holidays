@@ -1,6 +1,6 @@
 "use client";
 import { FC, useId, useRef } from "react";
-import { Table } from "@tanstack/react-table";
+import { FilterFn, Table } from "@tanstack/react-table";
 import { Item } from "@/lib/dummy-data";
 
 import { Input } from "@/components/ui/input";
@@ -9,11 +9,22 @@ import { CircleXIcon, ListFilterIcon } from "lucide-react";
 
 interface SearchFilterProps {
   // Add your props here
-  children?: React.ReactNode;
   table: Table<Item>;
 }
 
-const SearchFilter: FC<SearchFilterProps> = ({ children, table }) => {
+// Custom filter function for multi-column searching
+export const multiColumnFilterFn: FilterFn<Item> = (
+  row,
+  columnId,
+  filterValue: string
+) => {
+  const searchableRowContent =
+    `${row.original.name} ${row.original.description}`.toLowerCase();
+  const searchTerm = (filterValue ?? "").toLowerCase();
+  return searchableRowContent.includes(searchTerm);
+};
+
+const SearchFilter: FC<SearchFilterProps> = ({ table }) => {
   const id = useId();
   const inputRef = useRef<HTMLInputElement>(null);
 
