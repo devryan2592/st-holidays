@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins, Barlow } from "next/font/google";
 import "./globals.css";
+import { QueryProvider } from "@/lib/providers/query-provider";
 
 
 
@@ -31,7 +32,9 @@ export default function RootLayout({
       <body
         className={`${barlow.variable} ${poppins.variable} font-barlow antialiased`}
       >
-        {children}
+        <QueryProvider>
+          {children}
+        </QueryProvider>
       </body>
     </html>
   );

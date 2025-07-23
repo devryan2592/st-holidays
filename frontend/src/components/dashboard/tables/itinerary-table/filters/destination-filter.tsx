@@ -47,13 +47,11 @@ const DestinationFilter: FC<DestinationFilterProps> = ({ table }) => {
       destinationArray.push(...key);
     });
 
-    console.log("destinationArray", destinationArray);
 
     destinationArray.forEach((dest) => {
       counts.set(dest, destinationArray.filter((d) => d === dest).length);
     });
 
-    console.log(counts);
 
     return counts;
   }, [table.getColumn("destinations")?.getFacetedUniqueValues()]);
