@@ -14,12 +14,14 @@ interface PriceRangeFilterPickerProps {
   items: Item[];
   table: Table<Item>;
   color?: 'primary' | 'secondary' | 'accent';
+  disabled?: boolean;
 }
 
 const PriceRangeFilterPicker = ({
   items,
   table,
-  color = "primary"
+  color = "primary",
+  disabled = false
 }: PriceRangeFilterPickerProps) => {
   const id = useId();
 
@@ -44,6 +46,7 @@ const PriceRangeFilterPicker = ({
     minValue,
     maxValue,
     initialValue: initialPriceRange,
+    disabled,
   }); // set initialValue: [minValue, maxValue] to show all items by default
 
   // Calculate the price step based on the min and max prices
@@ -115,65 +118,46 @@ const PriceRangeFilterPicker = ({
           ))}
         </div>
         <Slider
-          value={sliderValue}
-          onValueChange={handleSliderValueChange}
           min={minValue}
           max={maxValue}
-          aria-label="Price range"
-          color={color}
+          step={priceStep}
+          value={sliderValue}
+          onValueChange={disabled ? undefined : handleSliderChange}
+          minStepsBetweenThumbs={1}
+          className={`py-4 ${disabled ? 'opacity-50' : ''}`}
+          data-color={color}
+          disabled={disabled}
         />
       </div>
 
       {/* Inputs */}
       <div className="flex items-center justify-between gap-4">
-        <div className="*:not-first:mt-1">
-          <Label htmlFor={`${id}-min`} className="text-xs">
-            Min price:
-          </Label>
-          <div className="relative">
+        <div className="flex items-center space-x-2">
+          <div className="grid gap-1.5">
+            <Label htmlFor={`${id}-min`}>Min</Label>
             <Input
               id={`${id}-min`}
-              className="peer w-full ps-6"
-              type="text"
-              inputMode="decimal"
+              type="number"
+              min={minValue}
+              max={maxValue}
               value={inputValues[0]}
-              onChange={(e) => handleInputChange(e, 0)}
-              onBlur={() => validateAndUpdateValue(inputValues[0], 0)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  validateAndUpdateValue(inputValues[0], 0);
-                }
-              }}
-              aria-label="Enter minimum price"
+              onChange={(e) => !disabled && handleInputChange(e, 0)}
+              className="h-8 w-24"
+              disabled={disabled}
             />
-            <span className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm peer-disabled:opacity-50">
-              $
-            </span>
           </div>
-        </div>
-        <div className="*:not-first:mt-1">
-          <Label htmlFor={`${id}-max`} className="text-xs">
-            Max price:
-          </Label>
-          <div className="relative">
+          <div className="grid gap-1.5">
+            <Label htmlFor={`${id}-max`}>Max</Label>
             <Input
               id={`${id}-max`}
-              className="peer w-full ps-6"
-              type="text"
-              inputMode="decimal"
+              type="number"
+              min={minValue}
+              max={maxValue}
               value={inputValues[1]}
-              onChange={(e) => handleInputChange(e, 1)}
-              onBlur={() => validateAndUpdateValue(inputValues[1], 1)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  validateAndUpdateValue(inputValues[1], 1);
-                }
-              }}
-              aria-label="Enter maximum price"
+              onChange={(e) => !disabled && handleInputChange(e, 1)}
+              className="h-8 w-24"
+              disabled={disabled}
             />
-            <span className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm peer-disabled:opacity-50">
-              $
-            </span>
           </div>
         </div>
       </div>

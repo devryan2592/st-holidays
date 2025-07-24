@@ -34,9 +34,15 @@ interface DataTableProps<TData, TValue> {
   table: Table<TData>
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  isLoading?: boolean
 }
 
-const DataTable = <TData, TValue>({ columns, data, table }: DataTableProps<TData, TValue>) => {
+const DataTable = <TData, TValue>({ 
+  columns, 
+  data, 
+  table, 
+  isLoading = false 
+}: DataTableProps<TData, TValue>) => {
 
 
   return (
@@ -103,15 +109,28 @@ const DataTable = <TData, TValue>({ columns, data, table }: DataTableProps<TData
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {isLoading ? (
+            // Show loading state for rows only
+            <TableRow>
+              <TableCell 
+                colSpan={columns.length} 
+                className="h-24 text-center"
+              >
+                <div className="flex items-center justify-center space-x-2">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900 dark:border-gray-100"></div>
+                  <span>Loading data...</span>
+                </div>
+              </TableCell>
+            </TableRow>
+          ) : table.getRowModel().rows?.length ? (
+            // Show actual data rows
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="">
-
+                  <TableCell key={cell.id}>
                     {flexRender(
                       cell.column.columnDef.cell,
                       cell.getContext()
@@ -121,12 +140,13 @@ const DataTable = <TData, TValue>({ columns, data, table }: DataTableProps<TData
               </TableRow>
             ))
           ) : (
+            // Show empty state
             <TableRow>
               <TableCell
                 colSpan={columns.length}
                 className="h-24 text-center"
               >
-                No results.
+                No results found.
               </TableCell>
             </TableRow>
           )}

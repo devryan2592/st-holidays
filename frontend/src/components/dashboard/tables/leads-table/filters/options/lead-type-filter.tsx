@@ -4,10 +4,14 @@ import { DataTableFacetedFilter, FacetedFilterOption } from "../../../common/dat
 
 
 interface LeadTypeFilterProps<TData> {
-    table: Table<TData>
+    table: Table<TData>;
+    disabled?: boolean;
 }
 
-function LeadTypeFilter<TData>({ table }: LeadTypeFilterProps<TData>) {
+function LeadTypeFilter<TData>({ 
+    table, 
+    disabled = false 
+}: LeadTypeFilterProps<TData>) {
     const leadTypeCount = table.getColumn("type")?.getFacetedUniqueValues() || new Map<string, number>();
 
 
@@ -27,6 +31,7 @@ function LeadTypeFilter<TData>({ table }: LeadTypeFilterProps<TData>) {
             column={table.getColumn("type")}
             title="Lead Type"
             options={options}
+            disabled={disabled}
         />
     );
 }

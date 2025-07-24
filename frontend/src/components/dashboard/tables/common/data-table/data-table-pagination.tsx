@@ -27,10 +27,14 @@ import {
 } from "@/components/ui/select"
 
 interface DataTablePaginationProps<TData> {
-  table: Table<TData>
+  table: Table<TData>;
+  pageCount?: number;
 }
 
-function DataTablePagination<TData>({ table }: DataTablePaginationProps<TData>) {
+function DataTablePagination<TData>({ 
+  table, 
+  pageCount: controlledPageCount 
+}: DataTablePaginationProps<TData>) {
   return (
     <div className="flex items-center justify-between px-2">
       <div className="flex-1 text-sm text-muted-foreground">
@@ -60,7 +64,7 @@ function DataTablePagination<TData>({ table }: DataTablePaginationProps<TData>) 
         </div>
         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
+          {controlledPageCount !== undefined ? controlledPageCount : table.getPageCount()}
         </div>
         <div>
           <Pagination>

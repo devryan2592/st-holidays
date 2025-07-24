@@ -7,6 +7,7 @@ type UseSliderWithInputProps = {
   maxValue?: number
   initialValue?: number[]
   defaultValue?: number[]
+  disabled?: boolean
 }
 
 export function useSliderWithInput({
@@ -14,6 +15,7 @@ export function useSliderWithInput({
   maxValue = 100,
   initialValue = [minValue],
   defaultValue = [minValue],
+  disabled = false,
 }: UseSliderWithInputProps) {
   const [sliderValue, setSliderValue] = useState(initialValue)
   const [inputValues, setInputValues] = useState(
@@ -69,20 +71,22 @@ export function useSliderWithInput({
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-      const newValue = e.target.value
-      if (newValue === "" || /^-?\d*\.?\d*$/.test(newValue)) {
-        const newInputValues = [...inputValues]
-        newInputValues[index] = newValue
-        setInputValues(newInputValues)
-      }
+      if (disabled) return;
+      const rawValue = e.target.value
+      setInputValues((prev) => {
+        const newInputValues = [...prev]
+        newInputValues[index] = rawValue
+        return newInputValues
+      })
     },
-    [inputValues]
+    [inputValues, disabled]
   )
 
-  const handleSliderChange = useCallback((newValue: number[]) => {
-    setSliderValue(newValue)
-    setInputValues(newValue.map((v) => v.toString()))
-  }, [])
+  const handleSliderChange = useCallback((value: number[]) => {
+    if (disabled) return;
+    setSliderValue(value)
+    setInputValues(value.map((v) => v.toString()))
+  }, [disabled])
 
   const resetToDefault = useCallback(() => {
     setSliderValue(defaultValue)

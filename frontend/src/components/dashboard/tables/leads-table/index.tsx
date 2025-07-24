@@ -1,13 +1,13 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
   PaginationState,
+  RowSelectionState,
   SortingState,
   VisibilityState,
-  flexRender,
   getCoreRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
@@ -15,60 +15,123 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import { columns } from "@/components/dashboard/tables/leads-table/columns";
 import { Lead } from "@/types/lead";
 import DataTable from "../common/data-table";
 import LeadTableFilters from "./filters";
 import DataTablePagination from "../common/data-table/data-table-pagination";
+import { TableSkeleton } from "@/components/common-ui/table-skeleton";
 
-interface LeadsTableProps {
-  // Add your props here
-  data?: Lead[];
+export interface LeadsTableProps {
+  data: Lead[];
+  isLoading?: boolean;
+  pageCount?: number;
+  pagination?: PaginationState;
+  sorting?: SortingState;
+  columnFilters?: ColumnFiltersState;
+  onPaginationChange?: (pagination: PaginationState) => void;
+  onSortingChange?: (sorting: SortingState) => void;
+  onColumnFiltersChange?: (filters: ColumnFiltersState) => void;
 }
 
-const LeadsTable: FC<LeadsTableProps> = ({ data }) => {
+const LeadsTable: FC<LeadsTableProps> = ({
+  data = [],
+  isLoading = false,
+  pageCount = -1,
+  pagination: controlledPagination = { pageIndex: 0, pageSize: 10 },
+  sorting: controlledSorting = [],
+  columnFilters: controlledFilters = [],
+  onPaginationChange,
+  onSortingChange,
+  onColumnFiltersChange,
+}) => {
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
-  const [rowSelection, setRowSelection] = useState({})
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-
+  // Determine if we're using server-side pagination/sorting/filtering
+  const isServerSide = useMemo(
+    () => ({
+      pagination: onPaginationChange !== undefined,
+      sorting: onSortingChange !== undefined,
+      filtering: onColumnFiltersChange !== undefined,
+    }),
+    [onPaginationChange, onSortingChange, onColumnFiltersChange]
+  );
 
   const table = useReactTable({
-    data: data || [],
+    data,
     columns,
+    // Server-side pagination
+    pageCount: pageCount,
+    manualPagination: isServerSide.pagination,
+    manualSorting: isServerSide.sorting,
+    manualFiltering: isServerSide.filtering,
+    // State
     state: {
-      sorting,
-      pagination,
+      pagination: controlledPagination,
+      sorting: controlledSorting,
+      columnFilters: controlledFilters,
       columnVisibility,
       rowSelection,
-      columnFilters,
     },
-    enableRowSelection: true,
-    onRowSelectionChange: setRowSelection,
-    onSortingChange: setSorting,
-    enableSortingRemoval: false,
-    onColumnFiltersChange: setColumnFilters,
+    // Callbacks
+    onPaginationChange: (updater) => {
+      const newPagination =
+        typeof updater === 'function'
+          ? updater(controlledPagination)
+          : updater;
+      onPaginationChange?.(newPagination);
+    },
+    onSortingChange: (updater) => {
+      const newSorting =
+        typeof updater === 'function'
+          ? updater(controlledSorting)
+          : updater;
+      onSortingChange?.(newSorting);
+    },
+    onColumnFiltersChange: (updater) => {
+      const newFilters =
+        typeof updater === 'function'
+          ? updater(controlledFilters)
+          : updater;
+      onColumnFiltersChange?.(newFilters);
+    },
     onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    // Models
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-  })
+    getFilteredRowModel: isServerSide.filtering
+      ? undefined
+      : getFilteredRowModel(),
+    getPaginationRowModel: isServerSide.pagination
+      ? undefined
+      : getPaginationRowModel(),
+    getSortedRowModel: isServerSide.sorting
+      ? undefined
+      : getSortedRowModel(),
+    getFacetedRowModel: isServerSide.filtering
+      ? undefined
+      : getFacetedRowModel(),
+    getFacetedUniqueValues: isServerSide.filtering
+      ? undefined
+      : getFacetedUniqueValues(),
+  });
 
   return (
     <div className="space-y-4">
-      <LeadTableFilters table={table} />
-      <DataTable data={data || []} columns={columns} table={table} />
-      <DataTablePagination table={table} />
+      <LeadTableFilters table={table} disabled={isLoading} />
+      <DataTable
+        data={data}
+        columns={columns}
+        table={table}
+        isLoading={isLoading}
+      />
+      <DataTablePagination
+        table={table}
+        pageCount={pageCount}
+      />
     </div>
   );
 };

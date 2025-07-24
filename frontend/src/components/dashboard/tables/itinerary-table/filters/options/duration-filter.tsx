@@ -7,8 +7,8 @@ import { durationRanges } from "../../filter-functions";
 import { DataTableFacetedFilter, FacetedFilterOption } from "../../../common/data-table/data-table-faceted-filter";
 
 interface DurationFilterProps<TData> {
-  // Add your props here
-  table: Table<TData>
+  table: Table<TData>;
+  disabled?: boolean;
 }
 
 // Range Map Function
@@ -52,20 +52,20 @@ const sortRangeCountsByOrder = (
   return sortedMap;
 }
 
-function DurationFilter<TData>({ table }: DurationFilterProps<TData>) {
+function DurationFilter<TData>({
+  table,
+  disabled = false
+}: DurationFilterProps<TData>) {
   const durationCounts = useMemo(() => {
     const counts = new Map<string, number>();
     const durationColumn = table.getColumn("duration");
 
-
     if (!durationColumn) return counts;
-
 
     const durationMap = durationColumn.getFacetedUniqueValues();
     const durationCounts = countDurationsInCustomRanges(durationMap, durationRanges);
     return durationCounts;
   }, [table.getColumn("duration")?.getFacetedUniqueValues()]);
-
 
   const sortedDurationCounts = useMemo(() => {
     return sortRangeCountsByOrder(durationCounts, durationRanges);

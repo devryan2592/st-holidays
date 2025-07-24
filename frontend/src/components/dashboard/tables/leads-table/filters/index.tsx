@@ -10,11 +10,13 @@ import StatusFilter from "./options/status-filter"
 import LeadTypeFilter from "./options/lead-type-filter"
 
 interface LeadTableFiltersProps<TData> {
-  table: Table<TData>
+  table: Table<TData>;
+  disabled?: boolean;
 }
 
 function LeadTableFilters<TData>({
   table,
+  disabled = false,
 }: LeadTableFiltersProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
 
@@ -28,17 +30,19 @@ function LeadTableFilters<TData>({
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
+          disabled={disabled}
         />
 
-        <StatusFilter table={table} />
-        <LeadTypeFilter table={table} />
-        <DestinationFilter table={table} />
+        <StatusFilter table={table} disabled={disabled} />
+        <LeadTypeFilter table={table} disabled={disabled} />
+        <DestinationFilter table={table} disabled={disabled} />
 
         {isFiltered && (
           <Button
             variant="ghost"
             onClick={() => table.resetColumnFilters()}
             className="h-8 px-2 lg:px-3"
+            disabled={disabled}
           >
             Reset
             <Cross2Icon className="ml-2 h-4 w-4" />
@@ -52,6 +56,7 @@ function LeadTableFilters<TData>({
             variant="destructive"
             size="sm"
             className="h-8"
+            disabled={disabled}
             onClick={() => {
               // Handle bulk delete
               const selectedIds = table.getSelectedRowModel().rows.map(row => (row.original as unknown as Lead).id)

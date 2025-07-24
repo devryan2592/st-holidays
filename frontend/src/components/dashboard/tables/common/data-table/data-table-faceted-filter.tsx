@@ -31,15 +31,17 @@ export interface FacetedFilterOption {
 }
 
 interface DataTableFacetedFilterProps<TData, TValue> {
-  column?: Column<TData, TValue>
-  title?: string
-  options: FacetedFilterOption[]
+  column?: Column<TData, TValue>;
+  title?: string;
+  options: FacetedFilterOption[];
+  disabled?: boolean;
 }
 
 export function DataTableFacetedFilter<TData, TValue>({
   column,
   title,
   options,
+  disabled = false,
 }: DataTableFacetedFilterProps<TData, TValue>) {
 
   // Current selected values
@@ -48,7 +50,7 @@ export function DataTableFacetedFilter<TData, TValue>({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 ">
+        <Button variant="outline" size="sm" className="h-8" disabled={disabled}>
           <FilterIcon className="-ms-1 mr-1 opacity-90" size={16} aria-hidden="true" />
           {title}
           {uniqueValues?.size > 0 && (

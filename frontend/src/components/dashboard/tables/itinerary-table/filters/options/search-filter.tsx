@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils";
 import { CircleXIcon, ListFilterIcon } from "lucide-react";
 
 interface SearchFilterProps<TData> {
-  // Add your props here
   table: Table<TData>;
+  disabled?: boolean;
 }
 
 // Custom filter function for multi-column searching
@@ -24,7 +24,10 @@ interface SearchFilterProps<TData> {
 //   return searchableRowContent.includes(searchTerm);
 // };
 
-function SearchFilter<TData>({ table }: SearchFilterProps<TData>) {
+function SearchFilter<TData>({ 
+  table, 
+  disabled = false 
+}: SearchFilterProps<TData>) {
   const id = useId();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -39,11 +42,12 @@ function SearchFilter<TData>({ table }: SearchFilterProps<TData>) {
         )}
         value={(table.getColumn("name")?.getFilterValue() ?? "") as string}
         onChange={(e) =>
-          table.getColumn("name")?.setFilterValue(e.target.value)
+          !disabled && table.getColumn("name")?.setFilterValue(e.target.value)
         }
         placeholder="Filter by name or email..."
         type="text"
         aria-label="Filter by name or email"
+        disabled={disabled}
       />
       <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
         <ListFilterIcon size={16} aria-hidden="true" />

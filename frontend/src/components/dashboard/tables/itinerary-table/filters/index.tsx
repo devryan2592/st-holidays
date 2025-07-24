@@ -9,28 +9,31 @@ import { Button } from "@/components/ui/button"
 import { Cross2Icon } from "@radix-ui/react-icons"
 
 interface ItineraryTableFiltersProps {
-    table: Table<Item>
+    table: Table<Item>;
+    disabled?: boolean;
 }
 
 function ItineraryTableFilters({
     table,
+    disabled = false,
 }: ItineraryTableFiltersProps) {
     const isFiltered = table.getState().columnFilters.length > 0
 
     return (
         <div className="flex items-center justify-between">
             <div className="flex flex-1 items-center space-x-2">
-                <SearchFilter table={table} />
-                <DestinationFilter table={table} />
-                <DurationFilter table={table} />
-                <PriceFilter table={table} />
-                <StatusFilter table={table} />
+                <SearchFilter table={table} disabled={disabled} />
+                <DestinationFilter table={table} disabled={disabled} />
+                <DurationFilter table={table} disabled={disabled} />
+                <PriceFilter table={table} disabled={disabled} />
+                <StatusFilter table={table} disabled={disabled} />
 
                 {isFiltered && (
                     <Button
                         variant="ghost"
-                        onClick={() => table.resetColumnFilters()}
+                        onClick={() => !disabled && table.resetColumnFilters()}
                         className="h-8 px-2 lg:px-3"
+                        disabled={disabled}
                     >
                         Reset
                         <Cross2Icon className="ml-2 h-4 w-4" />
@@ -44,6 +47,7 @@ function ItineraryTableFilters({
                         variant="destructive"
                         size="sm"
                         className="h-8"
+                        disabled={disabled}
                         onClick={() => {
                             // Handle bulk delete
                             const selectedIds = table.getSelectedRowModel().rows.map(row => (row.original as unknown as Item).id)
