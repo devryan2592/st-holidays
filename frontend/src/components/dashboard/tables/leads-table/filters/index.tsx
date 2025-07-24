@@ -4,11 +4,10 @@ import { Cross2Icon } from "@radix-ui/react-icons"
 import { Table } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { DataTableFacetedFilter } from "../../common/data-table/data-table-faceted-filter"
 import { Lead } from "@/types/lead"
-import DestinationFilter from "./destination-filter"
-import StatusFilter from "./status-filter"
-import LeadTypeFilter from "./lead-type-filter"
+import DestinationFilter from "./options/destination-filter"
+import StatusFilter from "./options/status-filter"
+import LeadTypeFilter from "./options/lead-type-filter"
 
 interface LeadTableFiltersProps<TData> {
   table: Table<TData>
@@ -18,22 +17,6 @@ function LeadTableFilters<TData>({
   table,
 }: LeadTableFiltersProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
-
-
-
-  // Get unique destinations from data
-  const destinations = Array.from(
-    new Set(
-      table.getFilteredRowModel().rows.flatMap(row =>
-        (row.original as unknown as Lead).destinations || []
-      )
-    )
-  ).map(dest => ({
-    label: dest,
-    value: dest,
-  }))
-
-  console.log(destinations)
 
   return (
     <div className="flex items-center justify-between">

@@ -1,6 +1,6 @@
 import { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
-import { DataTableFacetedFilter, FacetedFilterOption } from "../../common/data-table/data-table-faceted-filter";
+import { DataTableFacetedFilter, FacetedFilterOption } from "../../../common/data-table/data-table-faceted-filter";
 
 interface StatusFilterProps<TData> {
     table: Table<TData>

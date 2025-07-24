@@ -5,20 +5,30 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { RowActions } from "../row-actions";
 import { format } from "date-fns";
+import { destinationFilterFn } from "../filter-functions";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const columns: ColumnDef<Lead>[] = [
   // Selection checkbox
   {
     id: "select",
-    header: "",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
     size: 30,
     enableSorting: false,
     cell: ({ row }) => (
-      <input
-        type="checkbox"
+      <Checkbox
         checked={row.getIsSelected()}
-        onChange={row.getToggleSelectedHandler()}
-        className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
       />
     ),
   },
@@ -102,6 +112,7 @@ export const columns: ColumnDef<Lead>[] = [
       </div>
     ),
     size: 200,
+    filterFn: destinationFilterFn,
   },
   // Travelers
   {
@@ -137,7 +148,7 @@ export const columns: ColumnDef<Lead>[] = [
     header: "Created",
     size: 100,
     cell: ({ row }) => (
-      <div className="text-sm text-gray-500">
+      <div className="text-sm text-muted-foreground">
         {format(new Date(row.getValue("createdAt")), "dd MMM yyyy")}
       </div>
     ),
@@ -148,7 +159,7 @@ export const columns: ColumnDef<Lead>[] = [
     header: "Updated",
     size: 100,
     cell: ({ row }) => (
-      <div className="text-sm text-gray-500">
+      <div className="text-sm text-muted-foreground">
         {format(new Date(row.getValue("updatedAt")), "dd MMM yyyy")}
       </div>
     ),

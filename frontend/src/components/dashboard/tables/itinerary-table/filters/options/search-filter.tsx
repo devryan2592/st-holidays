@@ -7,24 +7,24 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { CircleXIcon, ListFilterIcon } from "lucide-react";
 
-interface SearchFilterProps {
+interface SearchFilterProps<TData> {
   // Add your props here
-  table: Table<Item>;
+  table: Table<TData>;
 }
 
 // Custom filter function for multi-column searching
-export const multiColumnFilterFn: FilterFn<Item> = (
-  row,
-  columnId,
-  filterValue: string
-) => {
-  const searchableRowContent =
-    `${row.original.name} ${row.original.description}`.toLowerCase();
-  const searchTerm = (filterValue ?? "").toLowerCase();
-  return searchableRowContent.includes(searchTerm);
-};
+// fun const multiColumnFilterFn: FilterFn<Item> = (
+//   row,
+//   columnId,
+//   filterValue: string
+// ) => {
+//   const searchableRowContent =
+//     `${row.original.name} ${row.original.description}`.toLowerCase();
+//   const searchTerm = (filterValue ?? "").toLowerCase();
+//   return searchableRowContent.includes(searchTerm);
+// };
 
-const SearchFilter: FC<SearchFilterProps> = ({ table }) => {
+function SearchFilter<TData>({ table }: SearchFilterProps<TData>) {
   const id = useId();
   const inputRef = useRef<HTMLInputElement>(null);
 

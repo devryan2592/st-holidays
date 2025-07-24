@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils"
 export interface FacetedFilterOption {
   label: string
   value: string
-  count: number
+  count?: number
   icon?: React.ComponentType<{ className?: string }>
 }
 
@@ -41,20 +41,20 @@ export function DataTableFacetedFilter<TData, TValue>({
   title,
   options,
 }: DataTableFacetedFilterProps<TData, TValue>) {
-  
+
   // Current selected values
   const uniqueValues = useMemo(() => new Set(column?.getFilterValue() as string[]), [column?.getFilterValue()])
-  
+
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" className="h-8 ">
-          <FilterIcon className="-ms-1 mr-1 opacity-90" size={16} aria-hidden="true"/>
+          <FilterIcon className="-ms-1 mr-1 opacity-90" size={16} aria-hidden="true" />
           {title}
           {uniqueValues?.size > 0 && (
             <span className="bg-background text-muted-foreground ml-1 -me-1 inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium">
-            {uniqueValues.size}
-          </span>
+              {uniqueValues.size}
+            </span>
           )}
         </Button>
       </PopoverTrigger>
@@ -85,11 +85,11 @@ export function DataTableFacetedFilter<TData, TValue>({
                     )}
                   >
 
-                    
+
                     <div
                       className={cn(
                         "flex min-h-4 min-w-4 items-center justify-center group-data-[selected=true]:border-primary-foreground border border-accent",
-                        isSelected ? "bg-accent" : ""  
+                        isSelected ? "bg-accent" : ""
                       )}
                     >
                       {isSelected && (
@@ -100,11 +100,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                       <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
                     )}
                     <span className="group-data-[selected=true]:text-white">{option.label}</span>
-                    {option.count && (
-                      <span className="ml-auto flex h-4 w-4 items-center text-muted-foreground text-xs justify-center font-mono group-data-[selected=true]:text-primary-foreground">
-                        ({option.count})
-                      </span>
-                    )}
+
                   </CommandItem>
                 )
               })}

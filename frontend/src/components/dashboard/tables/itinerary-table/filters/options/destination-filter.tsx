@@ -1,9 +1,9 @@
-import { FC, useMemo } from "react";
-import { DataTableFacetedFilter, FacetedFilterOption } from "../../common/data-table/data-table-faceted-filter";
+import { useMemo } from "react";
+import { DataTableFacetedFilter, FacetedFilterOption } from "../../../common/data-table/data-table-faceted-filter";
 import { Table } from "@tanstack/react-table";
 
 interface DataTableToolbarProps<TData> {
-  table: Table<TData>
+    table: Table<TData>
 }
 
 
@@ -42,7 +42,7 @@ function DestinationFilter<TData>({ table }: DataTableToolbarProps<TData>) {
     }, [destinationCount]);
 
     return (
-        <DataTableFacetedFilter options={options} title="Destination" column={table.getColumn("destinations")}/>
+        <DataTableFacetedFilter options={options} title="Destination" column={table.getColumn("destinations")} />
     );
 };
 

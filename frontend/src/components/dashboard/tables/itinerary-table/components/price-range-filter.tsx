@@ -13,11 +13,13 @@ import { Table } from "@tanstack/react-table";
 interface PriceRangeFilterPickerProps {
   items: Item[];
   table: Table<Item>;
+  color?: 'primary' | 'secondary' | 'accent';
 }
 
 const PriceRangeFilterPicker = ({
   items,
   table,
+  color = "primary"
 }: PriceRangeFilterPickerProps) => {
   const id = useId();
 
@@ -88,7 +90,7 @@ const PriceRangeFilterPicker = ({
   };
 
   return (
-    <div className="*:not-first:mt-4">
+    <div className="*:not-first:mt-4 mt-4">
       <div>
         {/* Histogram bars */}
         <div className="flex h-12 w-full items-end px-3" aria-hidden="true">
@@ -107,7 +109,7 @@ const PriceRangeFilterPicker = ({
                   priceStep,
                   sliderValue
                 )}
-                className="bg-primary/20 size-full"
+                className={`bg-${color}/20 size-full`}
               ></span>
             </div>
           ))}
@@ -118,6 +120,7 @@ const PriceRangeFilterPicker = ({
           min={minValue}
           max={maxValue}
           aria-label="Price range"
+          color={color}
         />
       </div>
 

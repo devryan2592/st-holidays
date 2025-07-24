@@ -1,6 +1,6 @@
 import { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
-import { DataTableFacetedFilter, FacetedFilterOption } from "../../common/data-table/data-table-faceted-filter";
+import { DataTableFacetedFilter, FacetedFilterOption } from "../../../common/data-table/data-table-faceted-filter";
 
 
 interface LeadTypeFilterProps<TData> {
@@ -10,7 +10,6 @@ interface LeadTypeFilterProps<TData> {
 function LeadTypeFilter<TData>({ table }: LeadTypeFilterProps<TData>) {
     const leadTypeCount = table.getColumn("type")?.getFacetedUniqueValues() || new Map<string, number>();
 
-    console.log(leadTypeCount)
 
     const options = useMemo(() => {
         const options: FacetedFilterOption[] = [];

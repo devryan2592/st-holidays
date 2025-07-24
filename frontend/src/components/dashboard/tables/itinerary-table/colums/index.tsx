@@ -4,20 +4,9 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Item } from "@/lib/dummy-data";
-// import { multiColumnFilterFn, statusFilterFn } from "../filters";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import RowActions from "../row-actions";
-import ImageColumn from "./image";
-import NameDescription from "./name-description";
-import Destination from "./destination";
-import Duration from "./duration";
-import Price from "./price";
-import Status from "./status";
-import { durationFilterFn } from "../filters/duration-filter";
-import { priceFilterFn } from "../filters/price-filter";
-import { statusFilterFn } from "../filters/status-filter";
-import { destinationFilterFn } from "../filters/destination-filter";
+import { destinationFilterFn, durationFilterFn, priceFilterFn } from "../filter-functions";
 
 // Image, Name with desc, Destinations, duration, price, actions
 export const columns: ColumnDef<Item>[] = [
@@ -40,39 +29,61 @@ export const columns: ColumnDef<Item>[] = [
         aria-label="Select row"
       />
     ),
-    size: 28,
-    enableSorting: false,
-    enableHiding: false,
+    size: 30,
+
   },
   {
     header: "",
     accessorKey: "image",
-    cell: ({ row }) => <ImageColumn row={row} />,
-    size: 100,
+    cell: ({ row }) => {
+      return (
+        <div className="flex items-center justify-center mr-4">
+          <img
+            className="aspect-video"
+            src={row.getValue("image")}
+            alt=""
+          />
+        </div>
+      );
+    },
+    size: 80,
     enableHiding: false,
   },
   {
     id: "name",
     header: "Tour Name / Description",
     accessorFn: (row) => `${row.name}) ${row.description}`,
-    cell: ({ row }) => <NameDescription row={row} />,
+    cell: ({ row }) => {
+      const original = row.original;
+      return (
+        <div className="flex flex-col overflow-hidden w-[90%]">
+          <span className="font-medium line-clamp-1 ">
+            {original.name}
+          </span>
+          <p className="text-sm text-muted-foreground line-clamp-1">
+            {original.description}
+          </p>
+        </div>
+      );
+    },
     size: 300,
     // filterFn: multiColumnFilterFn,
     enableHiding: false,
   },
   {
-    header: "Destinations",
+    header: "Destination(s)",
     accessorKey: "destinations",
-    cell: ({ row }) => <Destination row={row} />,
+    cell: ({ row }) => <div className="max-w-[200px] truncate">
+      {row.original.destinations?.join(", ") || "-"}
+    </div>,
     size: 180,
     filterFn: destinationFilterFn,
   },
   {
     header: "Duration",
     accessorKey: "duration",
-    cell: ({ row }) => <Duration row={row} />,
+    cell: ({ row }) => <div className="">{row.original.duration} days</div>,
     size: 100,
-    // filterFn: multiColumnFilterFn,
     filterFn: durationFilterFn,
     enableHiding: false,
   },
@@ -80,7 +91,31 @@ export const columns: ColumnDef<Item>[] = [
     id: "price",
     header: "Price",
     accessorKey: "offer_price",
-    cell: ({ row }) => <Price row={row} />,
+    cell: ({ row }) => {
+      const original = row.original;
+      const price = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(Number(original.offer_price));
+
+      const actualPrice = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(Number(original.actual_price));
+
+      return (
+        <div className="flex flex-col gap-1">
+          <div className="text-sm text-muted-foreground line-through">
+            {actualPrice}
+          </div>
+          <div className="text-sm font-medium">{price}</div>
+        </div>
+      );
+    },
     size: 100,
     filterFn: priceFilterFn,
     enableHiding: false,
@@ -88,9 +123,20 @@ export const columns: ColumnDef<Item>[] = [
   {
     header: "Status",
     accessorKey: "status",
-    cell: ({ row }) => <Status row={row} />,
-    size: 100,
-    filterFn: statusFilterFn,
+    cell: ({ row }) => {
+      const status = row.getValue("status") as string;
+      const statusClasses: Record<string, string> = {
+        Published: "bg-blue-100 text-blue-800",
+        Internal: "bg-yellow-100 text-yellow-800",
+        Draft: "bg-purple-100 text-purple-800",
+      };
+      return (
+        <Badge className={`${statusClasses[status] || "bg-gray-100 text-gray-800"} text-xs`}>
+          {status}
+        </Badge>
+      );
+    },
+    size: 120,
   },
 
   {
