@@ -1,40 +1,30 @@
- "use client"
+"use client"
 
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { Table } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { DataTableFacetedFilter } from "./data-table-faceted-filter"
+import { DataTableFacetedFilter } from "../../common/data-table/data-table-faceted-filter"
 import { Lead } from "@/types/lead"
+import DestinationFilter from "./destination-filter"
+import StatusFilter from "./status-filter"
+import LeadTypeFilter from "./lead-type-filter"
 
-interface DataTableToolbarProps<TData> {
+interface LeadTableFiltersProps<TData> {
   table: Table<TData>
 }
 
-export function DataTableToolbar<TData>({
+function LeadTableFilters<TData>({
   table,
-}: DataTableToolbarProps<TData>) {
+}: LeadTableFiltersProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
-  
-  // Filter options
-  const statuses = [
-    { label: "New", value: "New" },
-    { label: "Followup", value: "Followup" },
-    { label: "Potential", value: "Potential" },
-    { label: "Positive", value: "Positive" },
-    { label: "Converted", value: "Converted" },
-    { label: "Closed", value: "Closed" },
-  ]
 
-  const types = [
-    { label: "B2C", value: "B2C" },
-    { label: "B2B", value: "B2B" },
-  ]
-  
+
+
   // Get unique destinations from data
   const destinations = Array.from(
     new Set(
-      table.getFilteredRowModel().rows.flatMap(row => 
+      table.getFilteredRowModel().rows.flatMap(row =>
         (row.original as unknown as Lead).destinations || []
       )
     )
@@ -42,6 +32,8 @@ export function DataTableToolbar<TData>({
     label: dest,
     value: dest,
   }))
+
+  console.log(destinations)
 
   return (
     <div className="flex items-center justify-between">
@@ -54,31 +46,11 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        
-        {table.getColumn("status") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
-            options={statuses}
-          />
-        )}
-        
-        {table.getColumn("type") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("type")}
-            title="Type"
-            options={types}
-          />
-        )}
-        
-        {table.getColumn("destinations") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("destinations")}
-            title="Destinations"
-            options={destinations}
-          />
-        )}
-        
+
+        <StatusFilter table={table} />
+        <LeadTypeFilter table={table} />
+        <DestinationFilter table={table} />
+
         {isFiltered && (
           <Button
             variant="ghost"
@@ -90,7 +62,7 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      
+
       <div className="flex items-center space-x-2">
         {table.getSelectedRowModel().rows.length > 0 && (
           <Button
@@ -111,3 +83,5 @@ export function DataTableToolbar<TData>({
     </div>
   )
 }
+
+export default LeadTableFilters

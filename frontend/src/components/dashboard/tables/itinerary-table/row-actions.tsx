@@ -15,7 +15,7 @@ import {
 import { Item } from "@/lib/dummy-data";
 import { Row } from "@tanstack/react-table";
 import { EllipsisIcon } from "lucide-react";
-import DeleteAlert from "../components/delete-alert";
+import DeleteAlert from "./components/delete-alert";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -74,7 +74,7 @@ const RowActions = ({ row }: { row: Row<Item> }) => {
               e.preventDefault();
             }}
             variant="destructive"
-            // className="hover:bg-destructive/50 text-destructive focus:bg-destructive focus:text-white"
+          // className="hover:bg-destructive/50 text-destructive focus:bg-destructive focus:text-white"
           >
             Delete
           </DropdownMenuItem>

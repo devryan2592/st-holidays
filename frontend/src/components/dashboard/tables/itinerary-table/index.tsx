@@ -319,7 +319,7 @@ const ItineraryTable: FC<ItineraryTableProps> = ({ children }) => {
               table.setPageSize(Number(value));
             }}
           >
-            <SelectTrigger id={id} className="w-fit whitespace-nowrap">
+            <SelectTrigger id={id!} className="w-fit whitespace-nowrap">
               <SelectValue placeholder="Select number of results" />
             </SelectTrigger>
             <SelectContent className="[&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2">

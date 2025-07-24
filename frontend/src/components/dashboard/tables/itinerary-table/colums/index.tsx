@@ -7,7 +7,7 @@ import { Item } from "@/lib/dummy-data";
 // import { multiColumnFilterFn, statusFilterFn } from "../filters";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import RowActions from "./row-actions";
+import RowActions from "../row-actions";
 import ImageColumn from "./image";
 import NameDescription from "./name-description";
 import Destination from "./destination";

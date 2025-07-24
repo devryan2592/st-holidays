@@ -15,7 +15,7 @@ const DESTINATIONS = [
   "Barcelona", "Tokyo", "Rio de Janeiro", "Amsterdam", "Venice", "Bangkok", "Vancouver", "Prague", "Istanbul", "Queenstown"
 ];
 
-const LEAD_TYPES = ["Inquiry", "Hot Lead", "Follow-up", "VIP", "Group"];
+const LEAD_TYPES = ["B2C", "B2B"];
 const STATUSES = ["New", "Followup", "Potential", "Positive", "Converted", "Closed"];
 const ASSIGNED_TO = ["John Smith", "Sarah Johnson", "Michael Brown", "Emily Davis", "David Wilson"];
 
