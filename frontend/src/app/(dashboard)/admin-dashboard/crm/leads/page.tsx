@@ -1,16 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 import PageHeader from "@/components/dashboard/page-header";
-// import {DataTable} from "@/components/dashboard/tables/leads-table/data-table";
-import DataTable from "@/components/dashboard/tables/common/data-table";
-import { columns } from "@/components/dashboard/tables/leads-table/columns";
-import { Lead } from "@/types/lead";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+
 import { DUMMY_LEADS } from "@/lib/dummy-data/leads";
 import LeadsTable from "@/components/dashboard/tables/leads-table";
 
@@ -18,10 +12,6 @@ const LeadsPage = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
-
-
-
 
   // Simulate API call with React Query
   const { data, isLoading, isError } = useQuery({
@@ -60,11 +50,9 @@ const LeadsPage = () => {
 
       </div>
 
-      {data && (
-        <LeadsTable
-          data={data.DUMMY_LEADS}
-        />
-      )}
+      <LeadsTable
+        data={data?.DUMMY_LEADS}
+      />
     </div>
   );
 };

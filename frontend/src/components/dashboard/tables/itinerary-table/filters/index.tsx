@@ -46,7 +46,7 @@ function ItineraryTableFilters({
                         className="h-8"
                         onClick={() => {
                             // Handle bulk delete
-                            const selectedIds = table.getSelectedRowModel().rows.map(row => (row.original as unknown as Lead).id)
+                            const selectedIds = table.getSelectedRowModel().rows.map(row => (row.original as unknown as Item).id)
                             console.log('Deleting:', selectedIds)
                             // TODO: Implement actual delete logic
                         }}

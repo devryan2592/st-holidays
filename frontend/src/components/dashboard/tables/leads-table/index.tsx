@@ -1,7 +1,10 @@
-import { FC, useState } from "react";
+"use client";
+
+import { FC, useEffect, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
+  PaginationState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -22,22 +25,27 @@ import DataTablePagination from "../common/data-table/data-table-pagination";
 
 interface LeadsTableProps {
   // Add your props here
-  data: Lead[];
+  data?: Lead[];
 }
 
 const LeadsTable: FC<LeadsTableProps> = ({ data }) => {
-  // const [data, setData] = React.useState<Lead[]>(initialData.length ? initialData : leads)
 
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [sorting, setSorting] = useState<SortingState>([])
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
 
   const table = useReactTable({
-    data,
+    data: data || [],
     columns,
     state: {
       sorting,
+      pagination,
       columnVisibility,
       rowSelection,
       columnFilters,
@@ -45,6 +53,7 @@ const LeadsTable: FC<LeadsTableProps> = ({ data }) => {
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
+    enableSortingRemoval: false,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
@@ -58,7 +67,7 @@ const LeadsTable: FC<LeadsTableProps> = ({ data }) => {
   return (
     <div className="space-y-4">
       <LeadTableFilters table={table} />
-      <DataTable data={data} columns={columns} table={table} />
+      <DataTable data={data || []} columns={columns} table={table} />
       <DataTablePagination table={table} />
     </div>
   );
