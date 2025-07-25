@@ -20,28 +20,32 @@ function ItineraryTableFilters({
     const isFiltered = table.getState().columnFilters.length > 0
 
     return (
-        <div className="flex items-center justify-between">
-            <div className="flex flex-1 items-center space-x-2">
-                <SearchFilter table={table} disabled={disabled} />
-                <DestinationFilter table={table} disabled={disabled} />
-                <DurationFilter table={table} disabled={disabled} />
-                <PriceFilter table={table} disabled={disabled} />
-                <StatusFilter table={table} disabled={disabled} />
+        <div className="flex justify-between gap-4 w-full">
+            <div className="flex flex-wrap items-center gap-2">
+                <div className="">
+                    <SearchFilter table={table} disabled={disabled} />
+                </div>
+                <div className="hidden lg:flex flex-wrap gap-2">
 
-                {isFiltered && (
-                    <Button
-                        variant="ghost"
-                        onClick={() => !disabled && table.resetColumnFilters()}
-                        className="h-8 px-2 lg:px-3"
-                        disabled={disabled}
-                    >
-                        Reset
-                        <Cross2Icon className="ml-2 h-4 w-4" />
-                    </Button>
-                )}
+                    <DestinationFilter table={table} disabled={disabled} />
+                    <DurationFilter table={table} disabled={disabled} />
+                    <PriceFilter table={table} disabled={disabled} />
+                    <StatusFilter table={table} disabled={disabled} />
+                    {isFiltered && (
+                        <Button
+                            variant="ghost"
+                            onClick={() => !disabled && table.resetColumnFilters()}
+                            className="h-8 px-2 lg:px-3"
+                            disabled={disabled}
+                        >
+                            Reset
+                            <Cross2Icon className="ml-2 h-4 w-4" />
+                        </Button>
+                    )}
+                </div>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex items-start space-x-2">
                 {table.getSelectedRowModel().rows.length > 0 && (
                     <Button
                         variant="destructive"

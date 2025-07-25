@@ -18,28 +18,28 @@ interface PriceFilterProps {
 
 
 
-const PriceFilter: FC<PriceFilterProps> = ({ 
-  children, 
-  table, 
-  disabled = false 
+const PriceFilter: FC<PriceFilterProps> = ({
+  children,
+  table,
+  disabled = false
 }) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           disabled={disabled}
-          className={disabled ? 'opacity-50' : ''}
+          className={`h-8 ${disabled ? 'opacity-50' : ''}`}
         >
           <FilterIcon className="-ms-1 mr-1 opacity-90" size={16} aria-hidden="true" />
           Price
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto min-w-36 p-3" align="start">
-        <PriceRangeFilterPicker 
-          table={table} 
-          items={dummyItems} 
-          color="accent" 
+        <PriceRangeFilterPicker
+          table={table}
+          items={dummyItems}
+          color="accent"
           disabled={disabled}
         />
       </PopoverContent>

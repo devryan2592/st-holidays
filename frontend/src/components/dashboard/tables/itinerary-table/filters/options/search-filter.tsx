@@ -24,9 +24,9 @@ interface SearchFilterProps<TData> {
 //   return searchableRowContent.includes(searchTerm);
 // };
 
-function SearchFilter<TData>({ 
-  table, 
-  disabled = false 
+function SearchFilter<TData>({
+  table,
+  disabled = false
 }: SearchFilterProps<TData>) {
   const id = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -37,7 +37,7 @@ function SearchFilter<TData>({
         id={`${id}-input`}
         ref={inputRef}
         className={cn(
-          "peer min-w-60 ps-9",
+          "peer min-w-60  ps-9 h-8",
           Boolean(table.getColumn("name")?.getFilterValue()) && "pe-9"
         )}
         value={(table.getColumn("name")?.getFilterValue() ?? "") as string}

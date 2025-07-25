@@ -130,6 +130,7 @@ const LeadsPage = () => {
         <PageHeader
           title="Leads"
           description="Manage and track your leads in one place."
+          newButtonPath="/admin-dashboard/crm/leads/new"
         />
       </div>
 

@@ -43,15 +43,6 @@ export interface Lead {
     passportNumber: string;
     documents: string[];
   }[];
-  flightDetails?: {
-    from: string;
-    to: string;
-    date: string;
-    class: string;
-    mealPlan: string;
-    seatingPreference: string;
-    specialRequirements: string;
-  }[];
   nextAction?: {
     call?: {
       date: string;
