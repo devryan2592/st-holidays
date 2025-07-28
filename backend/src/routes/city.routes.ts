@@ -3,9 +3,9 @@ import {
   createCityController,
   deleteCityController,
   getAllCitiesController,
-  getSingleCityController,
+  getCityByIdController,
   updateCityController,
-} from "../controllers/city-controllers";
+} from "../controllers/city.controller";
 import { authMiddleware } from "@/middlewares/auth-middleware";
 
 const router = Router();
@@ -17,7 +17,7 @@ router
 
 router
   .route("/:id")
-  .get(getSingleCityController)
+  .get(getCityByIdController)
   .patch(authMiddleware, updateCityController)
   .delete(authMiddleware, deleteCityController);
 

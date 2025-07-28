@@ -11,6 +11,9 @@ import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./config/swagger/swagger.config";
 import { errorHandler } from "./middlewares/errorHandler";
 import corsOptions from "./config/cors/cors-options";
+import { toNodeHandler } from "better-auth/node";
+import { auth } from "@/config/auth";
+
 const app: Express = express();
 
 // View engine setup
@@ -25,13 +28,18 @@ app.engine(
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views"));
 
-app.use(helmet());
 app.use(cors(corsOptions));
+
+// Auth Routes
+app.all("/api/v1/auth/{*any}", toNodeHandler(auth));
+
+app.use(helmet());
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(compression());
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(express.json());
 
 // Serve static files
 app.use(express.static(path.join(__dirname, "public")));

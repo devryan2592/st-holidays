@@ -3,9 +3,9 @@ import {
   createDestinationController,
   deleteDestinationController,
   getAllDestinationsController,
-  getSingleDestinationController,
+  getDestinationByIdController,
   updateDestinationController,
-} from "../controllers/destination-controllers";
+} from "../controllers/destination.controller";
 import { authMiddleware } from "@/middlewares/auth-middleware";
 
 const router = Router();
@@ -17,7 +17,7 @@ router
 
 router
   .route("/:id")
-  .get(getSingleDestinationController)
+  .get(getDestinationByIdController)
   .patch(authMiddleware, updateDestinationController)
   .delete(authMiddleware, deleteDestinationController);
 

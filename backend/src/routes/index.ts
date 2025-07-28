@@ -1,8 +1,6 @@
 import { Response, Router } from "express";
 
 import { HTTP_STATUS } from "@/constants";
-import authRoutes from "./auth.routes";
-// import userRoutes from "./user.routes";
 import destinationRoutes from "./destination.routes";
 import cityRoutes from "./city.routes";
 
@@ -16,16 +14,12 @@ router.get("/health", (_, res: Response) => {
   });
 });
 
-// Auth Routes
-router.use("/auth", authRoutes);
-
-// User Routes
-// router.use("/user", userRoutes);
-
 // Destination Routes
 router.use("/destinations", destinationRoutes);
 
 // City Routes
 router.use("/cities", cityRoutes);
+
+// Day Itinerary Routes
 
 export default router;

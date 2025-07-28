@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Barlow } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/lib/providers/query-provider";
-
-
+import ReactScanInitializer from "@/lib/react-scan";
 
 const barlow = Barlow({
   variable: "--font-barlow",
@@ -15,7 +14,7 @@ const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-})
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -32,9 +31,8 @@ export default function RootLayout({
       <body
         className={`${barlow.variable} ${poppins.variable} font-barlow antialiased`}
       >
-        <QueryProvider>
-          {children}
-        </QueryProvider>
+        <ReactScanInitializer />
+        <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
   );

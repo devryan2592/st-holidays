@@ -68,20 +68,19 @@ const ItineraryAccordion: FC<ItineraryAccordionProps> = ({ children }) => {
           >
             <AccordionHeader className="flex">
               <AccordionTrigger className="focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-center justify-between rounded-md py-2 text-left text-[15px] leading-6 font-semibold transition-all outline-none focus-visible:ring-[3px] [&[data-state=open]>svg]:rotate-180">
-                <span className="flex items-center gap-3 ">
-                  <span
-                    className="flex flex-col size-14 shrink-0 items-center justify-center rounded-full border bg-primary/10 text-primary"
+                <div className="flex items-center gap-3">
+                  <div
+                    className="flex gap-2 shrink-0 items-center justify-center border bg-primary/10 text-primary px-2 py-1"
                     aria-hidden="true"
                   >
-                    <span className="text-xs leading-4">Day</span>
-                    <span className="font-poppins text-base font-semibold">
-                      0{item.id}
-                    </span>
-                  </span>
+                    <p className="text-sm">
+                      Day <span className=""> 0{item.id}</span>
+                    </p>
+                  </div>
                   <span className="flex flex-col space-y-[0.5px]">
                     <span className="text-base">{item.title}</span>
                   </span>
-                </span>
+                </div>
                 <ChevronDownIcon
                   size={16}
                   className="pointer-events-none shrink-0 opacity-60 transition-transform duration-200"

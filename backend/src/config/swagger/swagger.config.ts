@@ -1,4 +1,6 @@
 import swaggerJsdoc from "swagger-jsdoc";
+import { destinationDocs } from "./docs/destination.docs";
+import { cityDocs } from "./docs/city.docs";
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -36,6 +38,14 @@ const options: swaggerJsdoc.Options = {
           bearerFormat: "JWT",
         },
       },
+      schemas: {
+        ...destinationDocs.schemas,
+        ...cityDocs.schemas,
+      },
+    },
+    paths: {
+      ...destinationDocs.paths,
+      ...cityDocs.paths,
     },
   },
   apis: ["./src/controllers/**/*.ts"], // Path to the API docs
