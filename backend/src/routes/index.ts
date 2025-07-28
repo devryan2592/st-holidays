@@ -3,6 +3,8 @@ import { Response, Router } from "express";
 import { HTTP_STATUS } from "@/constants";
 import destinationRoutes from "./destination.routes";
 import cityRoutes from "./city.routes";
+import tourRoutes from "./tour.routes";
+import dayItineraryItemRoutes from "./day-itinerary-item.routes";
 
 const router = Router();
 
@@ -20,6 +22,10 @@ router.use("/destinations", destinationRoutes);
 // City Routes
 router.use("/cities", cityRoutes);
 
-// Day Itinerary Routes
+// Tour Routes
+router.use("/tours", tourRoutes);
+
+// Day Itinerary Item Routes
+router.use("/day-itinerary-items", dayItineraryItemRoutes);
 
 export default router;

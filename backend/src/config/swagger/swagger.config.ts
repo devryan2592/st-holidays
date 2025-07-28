@@ -1,6 +1,8 @@
 import swaggerJsdoc from "swagger-jsdoc";
 import { destinationDocs } from "./docs/destination.docs";
 import { cityDocs } from "./docs/city.docs";
+import { tourDocs } from "./docs/tour.docs";
+import { dayItineraryItemDocs } from "./docs/day-itinerary-item.docs";
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -41,11 +43,15 @@ const options: swaggerJsdoc.Options = {
       schemas: {
         ...destinationDocs.schemas,
         ...cityDocs.schemas,
+        ...tourDocs.schemas,
+        ...dayItineraryItemDocs.schemas,
       },
     },
     paths: {
       ...destinationDocs.paths,
       ...cityDocs.paths,
+      ...tourDocs.paths,
+      ...dayItineraryItemDocs.paths,
     },
   },
   apis: ["./src/controllers/**/*.ts"], // Path to the API docs
