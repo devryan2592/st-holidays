@@ -4,7 +4,10 @@ import { useMemo } from "react";
 
 import { Table } from "@tanstack/react-table";
 import { durationRanges } from "../../filter-functions";
-import { DataTableFacetedFilter, FacetedFilterOption } from "../../../common/data-table/data-table-faceted-filter";
+import {
+  DataTableFacetedFilter,
+  FacetedFilterOption,
+} from "../../../../../common/data-table/data-table-faceted-filter";
 
 interface DurationFilterProps<TData> {
   table: Table<TData>;
@@ -31,7 +34,7 @@ const countDurationsInCustomRanges = (
   }
 
   return rangeCounts;
-}
+};
 
 // Sort range counts by order
 const sortRangeCountsByOrder = (
@@ -50,11 +53,11 @@ const sortRangeCountsByOrder = (
   }
 
   return sortedMap;
-}
+};
 
 function DurationFilter<TData>({
   table,
-  disabled = false
+  disabled = false,
 }: DurationFilterProps<TData>) {
   const durationCounts = useMemo(() => {
     const counts = new Map<string, number>();
@@ -63,7 +66,10 @@ function DurationFilter<TData>({
     if (!durationColumn) return counts;
 
     const durationMap = durationColumn.getFacetedUniqueValues();
-    const durationCounts = countDurationsInCustomRanges(durationMap, durationRanges);
+    const durationCounts = countDurationsInCustomRanges(
+      durationMap,
+      durationRanges
+    );
     return durationCounts;
   }, [table.getColumn("duration")?.getFacetedUniqueValues()]);
 
@@ -81,13 +87,16 @@ function DurationFilter<TData>({
       });
     });
 
-    return options
+    return options;
   }, [sortedDurationCounts]);
 
   return (
-
-    <DataTableFacetedFilter options={options} title="Duration" column={table.getColumn("duration")} />
+    <DataTableFacetedFilter
+      options={options}
+      title="Duration"
+      column={table.getColumn("duration")}
+    />
   );
-};
+}
 
 export default DurationFilter;

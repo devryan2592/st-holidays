@@ -1,19 +1,19 @@
 import { FC } from "react";
 import { Control, useWatch } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import FormInputField from "../../../../common/form/form-input-field";
-import { LeadFormValues } from "../types";
+import FormInputField from "@/components/common/form/form-input-field";
+import { LeadFormValues } from "@/schemas/lead-form-schema";
 
 interface PersonalInformationProps {
   control: Control<LeadFormValues>;
+  watch: any;
 }
 
-const PersonalInformation: FC<PersonalInformationProps> = ({ control }) => {
-  const leadType = useWatch({
-    control,
-    name: "type",
-    defaultValue: "B2C",
-  });
+const PersonalInformation: FC<PersonalInformationProps> = ({
+  control,
+  watch,
+}) => {
+  const leadType = watch("type");
 
   return (
     <Card>

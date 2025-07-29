@@ -1,57 +1,60 @@
 import { useMemo } from "react";
-import { DataTableFacetedFilter, FacetedFilterOption } from "../../../common/data-table/data-table-faceted-filter";
+import {
+  DataTableFacetedFilter,
+  FacetedFilterOption,
+} from "../../../../../common/data-table/data-table-faceted-filter";
 import { Table } from "@tanstack/react-table";
 
 interface DataTableToolbarProps<TData> {
-    table: Table<TData>;
-    disabled?: boolean;
+  table: Table<TData>;
+  disabled?: boolean;
 }
 
-function DestinationFilter<TData>({ 
-    table, 
-    disabled = false 
+function DestinationFilter<TData>({
+  table,
+  disabled = false,
 }: DataTableToolbarProps<TData>) {
-    const destinationCount = useMemo(() => {
-        const destinationColumn = table.getColumn("destinations");
-        if (!destinationColumn) return new Map<string, number>();
+  const destinationCount = useMemo(() => {
+    const destinationColumn = table.getColumn("destinations");
+    if (!destinationColumn) return new Map<string, number>();
 
-        const uniqueValues = Array.from(
-            destinationColumn.getFacetedUniqueValues().keys()
-        ) as string[];
+    const uniqueValues = Array.from(
+      destinationColumn.getFacetedUniqueValues().keys()
+    ) as string[];
 
-        let destinationArray: string[] = [];
-        Object.values(uniqueValues).forEach((key) => {
-            destinationArray.push(...key);
-        });
+    let destinationArray: string[] = [];
+    Object.values(uniqueValues).forEach((key) => {
+      destinationArray.push(...key);
+    });
 
-        const counts = new Map<string, number>();
-        destinationArray.forEach((dest) => {
-            counts.set(dest, destinationArray.filter((d) => d === dest).length);
-        });
+    const counts = new Map<string, number>();
+    destinationArray.forEach((dest) => {
+      counts.set(dest, destinationArray.filter((d) => d === dest).length);
+    });
 
-        return counts;
-    }, [table.getColumn("destinations")?.getFacetedUniqueValues()]);
+    return counts;
+  }, [table.getColumn("destinations")?.getFacetedUniqueValues()]);
 
-    const options = useMemo(() => {
-        const options: FacetedFilterOption[] = [];
-        destinationCount.forEach((count, value) => {
-            options.push({
-                label: value,
-                value: value,
-                count: count,
-            });
-        });
-        return options;
-    }, [destinationCount]);
+  const options = useMemo(() => {
+    const options: FacetedFilterOption[] = [];
+    destinationCount.forEach((count, value) => {
+      options.push({
+        label: value,
+        value: value,
+        count: count,
+      });
+    });
+    return options;
+  }, [destinationCount]);
 
-    return (
-        <DataTableFacetedFilter 
-            options={options} 
-            title="Destination" 
-            column={table.getColumn("destinations")} 
-            disabled={disabled}
-        />
-    );
-};
+  return (
+    <DataTableFacetedFilter
+      options={options}
+      title="Destination"
+      column={table.getColumn("destinations")}
+      disabled={disabled}
+    />
+  );
+}
 
 export default DestinationFilter;

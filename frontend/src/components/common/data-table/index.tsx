@@ -1,20 +1,4 @@
-import { useState } from "react";
-
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  Table,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
+import { ColumnDef, Table, flexRender } from "@tanstack/react-table";
 
 import {
   Table as TableComponent,
@@ -23,30 +7,23 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-import DataTablePagination from "./data-table-pagination"
-
 interface DataTableProps<TData, TValue> {
-  table: Table<TData>
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-  isLoading?: boolean
+  table: Table<TData>;
+  columns: ColumnDef<TData, TValue>[];
+  isLoading?: boolean;
 }
 
-const DataTable = <TData, TValue>({ 
-  columns, 
-  data, 
-  table, 
-  isLoading = false 
+const DataTable = <TData, TValue>({
+  columns,
+  table,
+  isLoading = false,
 }: DataTableProps<TData, TValue>) => {
-
-
   return (
-
     <div className="rounded-md border bg-background">
       <TableComponent className="table-fixed">
         <TableHeader>
@@ -54,13 +31,16 @@ const DataTable = <TData, TValue>({
             <TableRow key={headerGroup.id} className="bg-background">
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id} style={{ width: `${header.getSize()}px` }} className="h-10">
-
+                  <TableHead
+                    key={header.id}
+                    style={{ width: `${header.getSize()}px` }}
+                    className="h-10"
+                  >
                     {header.isPlaceholder ? null : header.column.getCanSort() ? (
                       <div
                         className={cn(
                           header.column.getCanSort() &&
-                          "flex h-full cursor-pointer items-center justify-between gap-2 select-none"
+                            "flex h-full cursor-pointer items-center justify-between gap-2 select-none"
                         )}
                         onClick={header.column.getToggleSortingHandler()}
                         onKeyDown={(e) => {
@@ -103,7 +83,7 @@ const DataTable = <TData, TValue>({
                       )
                     )}
                   </TableHead>
-                )
+                );
               })}
             </TableRow>
           ))}
@@ -112,10 +92,7 @@ const DataTable = <TData, TValue>({
           {isLoading ? (
             // Show loading state for rows only
             <TableRow>
-              <TableCell 
-                colSpan={columns.length} 
-                className="h-24 text-center"
-              >
+              <TableCell colSpan={columns.length} className="h-24 text-center">
                 <div className="flex items-center justify-center space-x-2">
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900 dark:border-gray-100"></div>
                   <span>Loading data...</span>
@@ -131,10 +108,7 @@ const DataTable = <TData, TValue>({
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {flexRender(
-                      cell.column.columnDef.cell,
-                      cell.getContext()
-                    )}
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>
@@ -142,18 +116,14 @@ const DataTable = <TData, TValue>({
           ) : (
             // Show empty state
             <TableRow>
-              <TableCell
-                colSpan={columns.length}
-                className="h-24 text-center"
-              >
+              <TableCell colSpan={columns.length} className="h-24 text-center">
                 No results found.
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </TableComponent>
-    </div >
-
+    </div>
   );
 };
 

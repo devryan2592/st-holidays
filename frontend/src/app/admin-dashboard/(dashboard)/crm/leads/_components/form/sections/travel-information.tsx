@@ -2,12 +2,13 @@ import { FC } from "react";
 import { Control } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FormLabel } from "@/components/ui/form";
-import FormInputField from "../../../../common/form/form-input-field";
-import FormDateField from "../../../../common/form/form-date-field";
-import FormSelectField from "../../../../common/form/form-select-field";
-import FormCheckboxField from "../../../../common/form/form-checkbox-field";
-import FormTextAreaField from "../../../../common/form/form-text-area-field";
-import { LeadFormValues, leadSources, TRAVEL_TYPES } from "../types";
+import FormInputField from "@/components/common/form/form-input-field";
+import FormDateField from "@/components/common/form/form-date-field";
+import FormSelectField from "@/components/common/form/form-select-field";
+import FormCheckboxField from "@/components/common/form/form-checkbox-field";
+import FormTextAreaField from "@/components/common/form/form-text-area-field";
+import { LeadFormValues } from "@/schemas/lead-form-schema";
+import { LEAD_SOURCES, TRAVEL_TYPES } from "@/schemas/lead-form-schema";
 
 interface TravelInformationProps {
   control: Control<LeadFormValues>;
@@ -79,7 +80,7 @@ const TravelInformation: FC<TravelInformationProps> = ({ control }) => {
             placeholder="Select Lead Source"
             control={control}
             classname="col-span-1 w-full max-w-[250px]"
-            options={leadSources}
+            options={LEAD_SOURCES}
           />
 
           <div className="col-span-2">
@@ -88,9 +89,7 @@ const TravelInformation: FC<TravelInformationProps> = ({ control }) => {
               {["flight", "hotel", "car", "other"].map((req) => (
                 <FormCheckboxField
                   key={req}
-                  name={`requirements.${
-                    req as keyof LeadFormValues["requirements"]
-                  }`}
+                  name={req}
                   label={req}
                   placeholder={req}
                   required={true}

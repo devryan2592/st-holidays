@@ -1,17 +1,22 @@
 import { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
-import { DataTableFacetedFilter, FacetedFilterOption } from "../../../common/data-table/data-table-faceted-filter";
+import {
+  DataTableFacetedFilter,
+  FacetedFilterOption,
+} from "../../../../../common/data-table/data-table-faceted-filter";
 
 interface StatusFilterProps<TData> {
   table: Table<TData>;
   disabled?: boolean;
 }
 
-function StatusFilter<TData>({ 
-  table, 
-  disabled = false 
+function StatusFilter<TData>({
+  table,
+  disabled = false,
 }: StatusFilterProps<TData>) {
-  const statusCount = table.getColumn("status")?.getFacetedUniqueValues() || new Map<string, number>();
+  const statusCount =
+    table.getColumn("status")?.getFacetedUniqueValues() ||
+    new Map<string, number>();
 
   const options = useMemo(() => {
     const options: FacetedFilterOption[] = [];
@@ -32,6 +37,6 @@ function StatusFilter<TData>({
       disabled={disabled}
     />
   );
-};
+}
 
 export default StatusFilter;

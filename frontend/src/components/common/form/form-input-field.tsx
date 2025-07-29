@@ -11,7 +11,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { AtSignIcon } from "lucide-react";
-import { LeadFormValues } from "../lead-form";
+import { LeadFormValues } from "../../dashboard/forms/lead-form";
 
 interface FormInputFieldProps {
   // Add your props here

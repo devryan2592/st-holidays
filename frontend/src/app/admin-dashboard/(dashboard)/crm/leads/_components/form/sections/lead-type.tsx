@@ -1,8 +1,9 @@
 import { FC } from "react";
 import { Control } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import FormSelectField from "../../../../common/form/form-select-field";
-import { LeadFormValues, leadTypeOptions } from "../types";
+import FormSelectField from "@/components/common/form/form-select-field";
+import { LeadFormValues } from "@/schemas/lead-form-schema";
+import { LEAD_TYPES } from "@/schemas/lead-form-schema";
 
 interface LeadTypeProps {
   control: Control<LeadFormValues>;
@@ -22,7 +23,7 @@ const LeadType: FC<LeadTypeProps> = ({ control }) => {
             placeholder="Select lead type"
             control={control}
             classname="col-span-1 w-full max-w-[250px]"
-            options={leadTypeOptions}
+            options={LEAD_TYPES}
           />
         </div>
       </CardContent>

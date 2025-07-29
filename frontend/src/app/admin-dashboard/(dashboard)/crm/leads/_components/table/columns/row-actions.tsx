@@ -1,15 +1,25 @@
 import { Row } from "@tanstack/react-table";
-import { Lead } from "@/types/lead";
+import { MoreHorizontal } from "lucide-react";
+import { useRouter } from "next/navigation";
+
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
 
-export function RowActions({ row }: { row: Row<Lead> }) {
+import { Lead } from "@/types/lead";
+
+interface RowActionsProps {
+  row: Row<Lead>;
+}
+
+const RowActions = ({ row }: RowActionsProps) => {
+  const router = useRouter();
   const lead = row.original;
 
   return (
@@ -21,29 +31,27 @@ export function RowActions({ row }: { row: Row<Lead> }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuItem
           onClick={() => {
-            // TODO: Implement view lead details
-            console.log("View lead:", lead.id);
+            // TODO: Implement view details
+            console.log("View details", lead);
           }}
         >
           View Details
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
-            // TODO: Implement edit lead
-            console.log("Edit lead:", lead.id);
+            router.push(`/admin-dashboard/crm/leads/${lead.id}`);
           }}
         >
           Edit
         </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem
-          className="text-red-600"
           onClick={() => {
-            // TODO: Implement delete lead
-            if (confirm(`Delete lead #${lead.id}?`)) {
-              console.log("Delete lead:", lead.id);
-            }
+            // TODO: Implement delete
+            console.log("Delete", lead);
           }}
         >
           Delete
@@ -51,4 +59,6 @@ export function RowActions({ row }: { row: Row<Lead> }) {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};
+
+export default RowActions;

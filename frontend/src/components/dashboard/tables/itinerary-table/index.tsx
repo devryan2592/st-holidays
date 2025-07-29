@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useMemo, useState } from "react";
-import { 
+import {
   ColumnDef,
   ColumnFiltersState,
   PaginationState,
@@ -20,8 +20,8 @@ import {
 
 import { Item } from "@/lib/dummy-data";
 import { columns } from "./colums";
-import DataTable from "../common/data-table";
-import DataTablePagination from "../common/data-table/data-table-pagination";
+import DataTable from "../../../common/data-table";
+import DataTablePagination from "../../../common/data-table/data-table-pagination";
 import ItineraryTableFilters from "./filters";
 
 export interface ItineraryTableProps {
@@ -78,60 +78,49 @@ const ItineraryTable: FC<ItineraryTableProps> = ({
     },
     // Callbacks
     onPaginationChange: (updater) => {
-      const newPagination = 
-        typeof updater === 'function' 
-          ? updater(controlledPagination) 
-          : updater;
+      const newPagination =
+        typeof updater === "function" ? updater(controlledPagination) : updater;
       onPaginationChange?.(newPagination);
     },
     onSortingChange: (updater) => {
-      const newSorting = 
-        typeof updater === 'function' 
-          ? updater(controlledSorting) 
-          : updater;
+      const newSorting =
+        typeof updater === "function" ? updater(controlledSorting) : updater;
       onSortingChange?.(newSorting);
     },
     onColumnFiltersChange: (updater) => {
-      const newFilters = 
-        typeof updater === 'function' 
-          ? updater(controlledFilters) 
-          : updater;
+      const newFilters =
+        typeof updater === "function" ? updater(controlledFilters) : updater;
       onColumnFiltersChange?.(newFilters);
     },
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     // Models
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: isServerSide.filtering 
-      ? undefined 
+    getFilteredRowModel: isServerSide.filtering
+      ? undefined
       : getFilteredRowModel(),
-    getPaginationRowModel: isServerSide.pagination 
-      ? undefined 
+    getPaginationRowModel: isServerSide.pagination
+      ? undefined
       : getPaginationRowModel(),
-    getSortedRowModel: isServerSide.sorting 
-      ? undefined 
-      : getSortedRowModel(),
-    getFacetedRowModel: isServerSide.filtering 
-      ? undefined 
+    getSortedRowModel: isServerSide.sorting ? undefined : getSortedRowModel(),
+    getFacetedRowModel: isServerSide.filtering
+      ? undefined
       : getFacetedRowModel(),
-    getFacetedUniqueValues: isServerSide.filtering 
-      ? undefined 
+    getFacetedUniqueValues: isServerSide.filtering
+      ? undefined
       : getFacetedUniqueValues(),
   });
 
   return (
     <div className="space-y-4">
       <ItineraryTableFilters table={table} disabled={isLoading} />
-      <DataTable 
-        data={data} 
-        columns={columns} 
-        table={table} 
+      <DataTable
+        data={data}
+        columns={columns}
+        table={table}
         isLoading={isLoading}
       />
-      <DataTablePagination 
-        table={table} 
-        pageCount={pageCount}
-      />
+      <DataTablePagination table={table} pageCount={pageCount} />
     </div>
   );
 };
