@@ -81,7 +81,7 @@ model Destination {
   description String?
   thumbnail   String?
   images      String[]
-  faqs        String[]
+  faqs        Json[]
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
@@ -100,7 +100,7 @@ model City {
   images        String[]
   destinationId String
   destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
-  faqs          String[]
+  faqs          Json[]
   createdAt     DateTime    @default(now()) @map("created_at")
   updatedAt     DateTime    @updatedAt @map("updated_at")
 
@@ -124,10 +124,10 @@ model Tour {
   offerPrice    Decimal?    @db.Decimal(10, 2)
   thumbnail     String?
   images        String[]
-  highlights    String[]
-  inclusions    String[]
-  exclusions    String[]
-  terms         String[]
+  highlights    Json[]
+  inclusions    Json[]
+  exclusions    Json[]
+  terms         Json[]
   destinationId String
   destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
   createdAt     DateTime    @default(now()) @map("created_at")
@@ -149,10 +149,10 @@ model Attraction {
   offerPrice  Decimal? @db.Decimal(10, 2)
   thumbnail   String?
   images      String[]
-  inclusions  String[]
-  exclusions  String[]
-  terms       String[]
-  faqs        String[]
+  inclusions  Json[]
+  exclusions  Json[]
+  terms       Json[]
+  faqs        Json[]
   cityId      String
   city        City     @relation(fields: [cityId], references: [id])
 }

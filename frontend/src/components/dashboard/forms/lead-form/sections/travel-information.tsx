@@ -7,7 +7,7 @@ import FormDateField from "../../components/form-date-field";
 import FormSelectField from "../../components/form-select-field";
 import FormCheckboxField from "../../components/form-checkbox-field";
 import FormTextAreaField from "../../components/form-text-area-field";
-import { LeadFormValues, leadSources, travelTypes } from "../types";
+import { LeadFormValues, leadSources, TRAVEL_TYPES } from "../types";
 
 interface TravelInformationProps {
   control: Control<LeadFormValues>;
@@ -36,7 +36,7 @@ const TravelInformation: FC<TravelInformationProps> = ({ control }) => {
             placeholder="Select travel type"
             control={control}
             classname="col-span-1 w-full max-w-[250px]"
-            options={travelTypes}
+            options={TRAVEL_TYPES}
           />
 
           <FormDateField
@@ -83,14 +83,14 @@ const TravelInformation: FC<TravelInformationProps> = ({ control }) => {
           />
 
           <div className="col-span-2">
-            <FormLabel className="text-sm font-medium">
-              Requirements
-            </FormLabel>
+            <FormLabel className="text-sm font-medium">Requirements</FormLabel>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
               {["flight", "hotel", "car", "other"].map((req) => (
                 <FormCheckboxField
                   key={req}
-                  name={`requirements.${req as keyof LeadFormValues["requirements"]}`}
+                  name={`requirements.${
+                    req as keyof LeadFormValues["requirements"]
+                  }`}
                   label={req}
                   placeholder={req}
                   required={true}

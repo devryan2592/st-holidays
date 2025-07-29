@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 // Define form schema using Zod
 export const leadFormSchema = z.object({
@@ -76,7 +76,7 @@ export type LeadFormValues = z.infer<typeof leadFormSchema> & {
 };
 
 // Constants for form options
-export const travelTypes = [
+export const TRAVEL_TYPES = [
   { value: "leisure", label: "Leisure" },
   { value: "business", label: "Business" },
   { value: "family", label: "Family" },

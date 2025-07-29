@@ -1,16 +1,28 @@
-import { NextPage } from "next";
+import PageHeader from "@/components/dashboard/page-header";
+import CityForm from "./_components/city-form";
+import CitiesTable from "./_components/cities-table";
+import { dummyCities } from "./_components/dummy-data";
 
-interface CityPageProps {
-  // Add your page props here
-}
-
-const CityPage: NextPage<CityPageProps> = (props) => {
+export default function CitiesPage() {
   return (
-    <div>
-      <h1>CityPage Page</h1>
-      CityPage
+    <div className="flex flex-col gap-6">
+      <PageHeader
+        title="Cities"
+        description="Manage your travel cities"
+        newButtonPath="/admin-dashboard/tours/cities/new"
+      />
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Form Column (60%) */}
+        <div className="lg:col-span-2">
+          <CityForm />
+        </div>
+
+        {/* Table Column (40%) */}
+        <div className="lg:col-span-2">
+          <CitiesTable data={dummyCities} />
+        </div>
+      </div>
     </div>
   );
-};
-
-export default CityPage;
+}

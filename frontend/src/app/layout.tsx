@@ -31,7 +31,7 @@ export default function RootLayout({
       <body
         className={`${barlow.variable} ${poppins.variable} font-barlow antialiased`}
       >
-        <ReactScanInitializer />
+        {/* <ReactScanInitializer /> */}
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
